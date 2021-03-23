@@ -9,5 +9,5 @@
 Simple start:
 `npm start`
 
-Developpment start:
+Development start:
 `npm run dev`
