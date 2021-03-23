@@ -1,5 +1,5 @@
 {
-  "name": "lejardinier",
+  "name": "lejardinier-v2",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js",
