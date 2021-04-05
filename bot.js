@@ -35,6 +35,12 @@ bot.on("ready", () => {
 		} : null)
 			.then(presence => {
 				console.log(` ${"[+]".green} Presence set to ${presence.activities.shift().name.cyan}`)
+				setInterval(() => bot.user.setPresence({
+					activity: {
+						name: config.activityName,
+						type: config.activityType || "PLAYING"
+					}
+				}), 180000);
 			});
 
 		console.log(` ${"[+]".green} Logged in as: ${(bot.user.tag).cyan} - ${(bot.user.id).cyan}`);
