@@ -29,7 +29,7 @@ module.exports.listen = message => {
 
 	filter({
 		userIDs: ["564012236851511298", "418813560739725312"], // Synonym' | meumeu.
-		regex: /(he){2,}|(eh){2,}|(ehe)/g,
+		regex: /([hH][eE]){2,}|([eE][hH]){2,}|([eE][hH][eE])/g,
 		message: message
 	}, () => message.react(`823632553847947315`));
 

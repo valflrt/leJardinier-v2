@@ -40,7 +40,7 @@ commands.set("taux", {
 	execute: args => {
 		let { message, cmdArgs, bot } = args;
 
-		message.embed(`${cmdArgs.length !== 0 ? `${message.author}\ntaux ${cmdArgs.join(" ")}\n${bot.user}\n` : ""}${utils.randomNumber(0, 100)}%`);
+		message.embed(`${cmdArgs.length !== 0 ? `${message.author}\ntaux ${cmdArgs.join(" ")}\n${bot.user}\n` : ""}${utils.randomPercentage()}%`);
 	}
 });
 
