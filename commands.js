@@ -52,11 +52,15 @@ commands.set("hug", {
 		let { message } = args;
 		let mentions = message.mentions.users.array();
 		if (mentions.length === 0) mentions = [message.author];
-		fetch("https://nekos.life/api/v2/img/hug")
-			.then(data => message.customEmbed(embed => embed
-				.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
-				.setImage(data.url)
-			));
+		fetch("https://nekos.life/api/hug")
+			.then(res => res.json())
+			.then(data => {
+				console.log(data);
+				message.customEmbed(embed => embed
+					.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
+					.setImage(data.url)
+				)
+			});
 
 	}
 });
