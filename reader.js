@@ -4,8 +4,12 @@ module.exports.listen = message => {
 
 	let { content } = message;
 
-	if (content.match(/^[Nn]([Oo])+[Nn]$/g) !== null) {
+	if (content.match(/^[Nn][Oo][Nn]$/g) !== null) {
 		message.simple("*bril*");
+	};
+
+	if (content.match(/[Qq][Uu][Oo][Ii]((\s)?(\?)+)?$/g) !== null) {
+		message.simple("*feur*");
 	};
 
 	if (content.match(/^[Oo][Uu][Ii]$/g) !== null) {
@@ -35,7 +39,7 @@ module.exports.listen = message => {
 
 	filter({
 		userIDs: ["564012236851511298"], // Synonym'
-		regex: /plsJoie/g,
+		regex: /sale\sbot/g,
 		message: message
 	}, () => message.channel.send("<:partyingkeqing:823632179212713985>"));
 
@@ -45,6 +49,11 @@ module.exports.listen = message => {
 		message: message
 	}, () => message.simple(`oui ${utils.randomItem("la sainte jarre-dindon", "la sainte patate")} ?`));
 
+	filter({
+		userIDs: ["348011923985661952"], // D1s3ase
+		regex: /^[Aa]nticonstitutionnellement(\s\?|\?)?$/g,
+		message: message
+	}, () => message.simple(`oui maître, exactement`));
 };
 
 module.exports.static = (bot) => {

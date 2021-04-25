@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const config = require("./config.json");
 
 const utils = require("./utils");
@@ -50,17 +52,12 @@ commands.set("hug", {
 		let { message } = args;
 		let mentions = message.mentions.users.array();
 		if (mentions.length === 0) mentions = [message.author];
-		message.customEmbed(embed => embed
-			.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
-			.setImage(utils.randomItem(
-				"https://media1.tenor.com/images/969f0f462e4b7350da543f0231ba94cb/tenor.gif?itemid=14246498",
-				"https://media1.tenor.com/images/bb9c0c56769afa3b58b9efe5c7bcaafb/tenor.gif?itemid=16831471",
-				"https://media1.tenor.com/images/ea1ca14e49866429e2221aab2126cdb0/tenor.gif?itemid=14599424",
-				"https://media1.tenor.com/images/34a1d8c67e7b373de17bbfa5b8d35fc0/tenor.gif?itemid=8995974",
-				"https://media1.tenor.com/images/aeb42019b0409b98aed663f35b613828/tenor.gif?itemid=14108949",
-				"https://media1.tenor.com/images/f2805f274471676c96aff2bc9fbedd70/tenor.gif?itemid=7552077"
-			))
-		);
+		fetch("https://nekos.life/api/v2/img/hug")
+			.then(data => message.customEmbed(embed => embed
+				.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
+				.setImage(data.url)
+			));
+
 	}
 });
 
