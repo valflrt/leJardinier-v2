@@ -5,6 +5,15 @@ const config = require("./config.json");
 const utils = require("./utils");
 
 const commands = new Map();
+const commandsDisplay = new Array();
+
+class Command {
+	constructor(name, command) {
+
+	};
+
+	save = () => commands.set(this.name, this.command);
+}
 
 commands.set("help", {
 	description: "Donne une liste de toutes les commandes disponibles",
@@ -87,6 +96,11 @@ commands.set("code", {
 		});
 	}
 });
+
+commands.forEach((value, key) => commandsDisplay.push({
+	name: key,
+	description: value.description
+}));
 
 /*
 
