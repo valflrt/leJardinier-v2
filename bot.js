@@ -59,8 +59,6 @@ bot.on("message", async message => {
 	console.log(`${message.author.username.cyan}: ${(message.content.includes("~~") === true) ?
 		message.content.yellow : message.content}`); // logs every message
 
-	console.log(message);
-
 	// message sending methods
 
 	function mention(text) {
