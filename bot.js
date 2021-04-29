@@ -11,45 +11,38 @@ const token = require("./token.json");
 
 const bot = new discord.Client();
 
-bot.on("ready", () => {
+bot.on("ready", async () => {
 
 	// verifications and console logging
 
-	console.log("\033c");
-	console.log("Loading...");
+	console.clear(); //console.log("\033c");
 
-	(async () => {
+	await db.connect();
 
-		console.log("\033c"); // clear console
+	await bot.user.setUsername(config.username)
+		.then(client => console.log(` ${"[+]".green} Username set to ${(client.username).cyan}`));
 
-		await db.connect();
+	await bot.user.setStatus(config.status)
+		.then(client => console.log(` ${"[+]".green} Status set to ${(client.status).cyan}`));
 
-		await bot.user.setUsername(config.username)
-			.then(client => console.log(` ${"[+]".green} Username set to ${(client.username).cyan}`));
+	await bot.user.setPresence((config.activityName) ? {
+		activity: {
+			name: config.activityName,
+			type: config.activityType || "PLAYING"
+		}
+	} : null)
+		.then(presence => {
+			console.log(` ${"[+]".green} Presence set to ${presence.activities.shift().name.cyan}`)
+			setInterval(() => bot.user.setPresence({
+				activity: {
+					name: config.activityName,
+					type: config.activityType || "PLAYING"
+				}
+			}), 180000);
+		});
 
-		await bot.user.setStatus(config.status)
-			.then(client => console.log(` ${"[+]".green} Status set to ${(client.status).cyan}`));
-
-		await bot.user.setPresence((config.activityName) ? {
-			activity: {
-				name: config.activityName,
-				type: config.activityType || "PLAYING"
-			}
-		} : null)
-			.then(presence => {
-				console.log(` ${"[+]".green} Presence set to ${presence.activities.shift().name.cyan}`)
-				setInterval(() => bot.user.setPresence({
-					activity: {
-						name: config.activityName,
-						type: config.activityType || "PLAYING"
-					}
-				}), 180000);
-			});
-
-		console.log(` ${"[+]".green} Logged in as: ${(bot.user.tag).cyan} - ${(bot.user.id).cyan}`);
-		console.log("\n " + " connected ".bgGreen.black + "\n");
-
-	})();
+	console.log(` ${"[+]".green} Logged in as: ${(bot.user.tag).cyan} - ${(bot.user.id).cyan}`);
+	console.log("\n " + " connected ".bgGreen.black + "\n");
 
 	reader.static(bot);
 
@@ -100,7 +93,15 @@ bot.on("message", async message => {
 
 	commands.listen(message, bot); // listen to command calls
 
-	db.listen(message);
+	db.listen(message, ({ guild }) => {
+
+		let member = guild.members.find(member => member.id === message.author.id);
+
+		member.stats.messageCount = member.stats.messageCount + 1;
+
+		guild.save();
+
+	});
 
 });
 

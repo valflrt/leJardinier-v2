@@ -11,7 +11,7 @@ const connect = () => database
 
 const { Guild, Member } = require("./models");
 
-const listen = (message) => {
+const listen = (message, callback) => {
 
 	Guild.findOne({ id: message.guild.id })
 		.then(fetchedGuild => {
@@ -29,7 +29,7 @@ const listen = (message) => {
 			};
 
 			Member.findOne({ id: message.author.id })
-				.then(fetchedMember => {
+				.then(async fetchedMember => {
 
 					let { author } = message;
 
@@ -42,8 +42,8 @@ const listen = (message) => {
 
 						fetchedGuild.members.push(createdMember);
 
-						fetchedGuild.save();
-						createdMember.save();
+						await fetchedGuild.save();
+						await createdMember.save();
 
 					};
 
@@ -54,6 +54,10 @@ const listen = (message) => {
 						fetchedGuild.save();
 					};
 
+					callback({
+						member: fetchedMember,
+						guild: fetchedGuild
+					});
 
 				}).catch(err => console.log(err));
 
