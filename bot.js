@@ -4,6 +4,7 @@ require("colors");
 const commands = require("./commands");
 const reader = require("./reader");
 const utils = require("./utils");
+const db = require("./db/db");
 
 const config = require("./config.json");
 const token = require("./token.json");
@@ -20,6 +21,8 @@ bot.on("ready", () => {
 	(async () => {
 
 		console.log("\033c"); // clear console
+
+		await db.connect();
 
 		await bot.user.setUsername(config.username)
 			.then(client => console.log(` ${"[+]".green} Username set to ${(client.username).cyan}`));
@@ -96,6 +99,8 @@ bot.on("message", async message => {
 	reader.listen(message); // simple fontion reading messages and replying in particular cases
 
 	commands.listen(message, bot); // listen to command calls
+
+	db.listen(message);
 
 });
 

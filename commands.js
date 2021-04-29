@@ -75,6 +75,21 @@ commands.set("pdp", {
 	}
 });
 
+commands.set("code", {
+	description: "Voire le code du bot (github)",
+	execute: args => {
+		let { message } = args;
+		message.customEmbed(embed => {
+			embed.setDescription(`Voici le lien pour voir le code qui me fait fonctionner ${utils.randomItem(":3", ":)", "!")}`);
+			embed.setTitle("voir le code");
+			embed.setURL(require("./package.json").repository.url);
+			return embed;
+		});
+	}
+});
+
+/*
+
 commands.set("testmodify", {
 	description: "la flemme vous connaissez ?",
 	execute: args => {
@@ -115,6 +130,8 @@ commands.set("detectreaction", {
 		});
 	}
 });
+
+*/
 
 module.exports.listen = (message, bot) => {
 	let text = message.content;
