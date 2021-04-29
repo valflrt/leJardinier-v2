@@ -5,7 +5,10 @@ const memberSchema = new Schema({
 	username: String,
 	id: String,
 	stats: {
-		messageCount: Number
+		messageCount: {
+			type: Number,
+			default: 0
+		}
 	}
 })
 

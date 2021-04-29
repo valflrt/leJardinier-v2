@@ -13,10 +13,10 @@ const { Guild, Member } = require("./models");
 
 const listen = (message, callback) => {
 
+	let { guild, author } = message;
+
 	Guild.findOne({ id: message.guild.id })
 		.then(fetchedGuild => {
-
-			let { guild } = message;
 
 			if (!fetchedGuild) {
 				new Guild({
@@ -30,8 +30,6 @@ const listen = (message, callback) => {
 
 			Member.findOne({ id: message.author.id })
 				.then(async fetchedMember => {
-
-					let { author } = message;
 
 					if (!fetchedMember) {
 
@@ -47,7 +45,7 @@ const listen = (message, callback) => {
 
 					};
 
-					let memberInGuild = fetchedGuild.members.find(member => member.id === author.id);
+					let memberInGuild = fetchedGuild?.members.find(member => member.id === author.id);
 
 					if (!memberInGuild) {
 						fetchedGuild.members.push(fetchedMember);
@@ -55,8 +53,8 @@ const listen = (message, callback) => {
 					};
 
 					callback({
-						member: fetchedMember,
-						guild: fetchedGuild
+						member: Member.findOne({ id: author.id }),
+						guild: Guild.findOne({ id: guild.id })
 					});
 
 				}).catch(err => console.log(err));
