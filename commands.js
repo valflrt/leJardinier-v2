@@ -14,7 +14,7 @@ class Command {
 	};
 };
 
-commands.set("help", {
+new Command("help", {
 	description: "Donne une liste de toutes les commandes disponibles",
 	execute: args => {
 		let { message, bot } = args;
@@ -29,7 +29,7 @@ commands.set("help", {
 	}
 });
 
-commands.set("hey", {
+new Command("hey", {
 	description: "Dire bonjour au bot",
 	execute: args => {
 		let { message } = args;
@@ -37,7 +37,7 @@ commands.set("hey", {
 	}
 });
 
-commands.set("vraioufaux", {
+new Command("vraioufaux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
 	execute: args => {
 		let { message, cmdArgs, bot } = args;
@@ -45,7 +45,7 @@ commands.set("vraioufaux", {
 	}
 });
 
-commands.set("taux", {
+new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
 	execute: args => {
 		let { message, cmdArgs, bot } = args;
@@ -54,7 +54,7 @@ commands.set("taux", {
 	}
 });
 
-commands.set("hug", {
+new Command("hug", {
 	description: "Hug somebody",
 	execute: args => {
 		let { message } = args;
@@ -73,7 +73,7 @@ commands.set("hug", {
 	}
 });
 
-commands.set("pdp", {
+new Command("pdp", {
 	description: "Obtenir la photo de profil d'un membre du serveur",
 	execute: args => {
 		let { message } = args;
@@ -83,7 +83,7 @@ commands.set("pdp", {
 	}
 });
 
-commands.set("code", {
+new Command("code", {
 	description: "Voire le code du bot (github)",
 	execute: args => {
 		let { message } = args;
@@ -98,7 +98,7 @@ commands.set("code", {
 
 /*
 
-commands.set("testmodify", {
+new Command("testmodify", {
 	description: "la flemme vous connaissez ?",
 	execute: args => {
 		let { message } = args;
@@ -115,7 +115,7 @@ commands.set("testmodify", {
 	}
 });
 
-commands.set("detectreaction", {
+new Command("detectreaction", {
 	description: "lorsque la reaction est ajoutée le message change",
 	execute: args => {
 		let { message } = args;
