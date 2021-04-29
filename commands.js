@@ -1,18 +1,18 @@
 const fetch = require("node-fetch");
 
 const config = require("./config.json");
-
 const utils = require("./utils");
 
 const commands = new Map();
 
 class Command {
 	constructor(name, command) {
-
+		this.name = name;
+		this.description = command.description;
+		this.execute = command.execute;
+		commands.set(name, this);
 	};
-
-	save = () => commands.set(this.name, this.command);
-}
+};
 
 commands.set("help", {
 	description: "Donne une liste de toutes les commandes disponibles",
