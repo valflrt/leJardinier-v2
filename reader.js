@@ -21,7 +21,7 @@ module.exports.listen = message => {
 	};
 
 	if (content.match(/^[Pp][Uu][Tt][Ee]$/g) !== null && message.reference !== null && message.mentions.users.get("710524468782694520") !== undefined) {
-		message.reply(`ok mais paye moi alors`);
+		message.simple(`ok ${message.author} mais paye moi alors`);
 	};
 
 	function filter(args, callback) {
