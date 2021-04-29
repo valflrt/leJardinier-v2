@@ -119,7 +119,7 @@ commands.set("detectreaction", {
 module.exports.listen = (message, bot) => {
 	let text = message.content;
 
-	if (text.startsWith(config.prefix)) {
+	if (text.startsWith("~~") && text.match(/~~/g).length === 1) {
 		text = text.replace(config.prefix, "");
 
 		let splited = text.split(" ");

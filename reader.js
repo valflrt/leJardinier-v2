@@ -20,6 +20,10 @@ module.exports.listen = message => {
 		message.react("🤬");
 	};
 
+	if (content.match(/^[Pp][Uu][Tt][Ee]$/g) !== null && message.reference !== null && message.mentions.users.get("710524468782694520") !== undefined) {
+		message.reply(`ok mais paye moi alors`);
+	};
+
 	function filter(args, callback) {
 		let { userIDs, regex, message } = args;
 		if (userIDs.find(id => id === message.author.id) && message.content.match(regex) !== null) return callback();
