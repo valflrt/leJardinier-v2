@@ -144,7 +144,7 @@ new Command("detectreaction", {
 module.exports.listen = (message, bot) => {
 	let text = message.content;
 
-	if (text.startsWith("~~") && text.match(/~~/g).length === 1) {
+	if (text.startsWith(config.prefix) && text.match(new RegExp(config.prefix, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
 		text = text.replace(config.prefix, "");
 
 		let splited = text.split(" ");

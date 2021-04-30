@@ -2,10 +2,10 @@
 	"username": "le Jardinier",
 	"activity": {
 		"list": [
-			"start command: ~~help",
-			"developer: Synonym'#8436 (valflrt on github)"
+			"use \"j!help\" to start",
+			"made by Synonym'#8436 (valflrt on github)"
 		]
 	},
-	"prefix": "~~",
+	"prefix": "j!",
 	"status": "idle"
 }

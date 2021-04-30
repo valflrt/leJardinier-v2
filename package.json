@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/valflrt/leJardinier-v2/tree/master"
+    "url": "https://github.com/valflrt/leJardinier-v2/"
   },
   "dependencies": {
     "colors": "^1.4.0",
