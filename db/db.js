@@ -1,5 +1,4 @@
 const database = require("mongoose");
-const { default: fetch } = require("node-fetch");
 
 const connect = () => database
 	.connect("mongodb://localhost/leJardinier", {
