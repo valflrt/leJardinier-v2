@@ -22,9 +22,9 @@ bot.on("ready", async () => {
 	await bot.user.setStatus(config.status)
 		.then(client => console.log(` ${"[+]".green} Status set to ${(client.status).cyan}`));
 
-	await bot.user.setPresence((config.activities[0]) ? {
+	await bot.user.setPresence((config.activity.list[0]) ? {
 		activity: {
-			name: config.activities[0],
+			name: config.activity.list[0],
 			type: config.activityType || "PLAYING"
 		}
 	} : null)

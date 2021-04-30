@@ -81,12 +81,12 @@ module.exports.static = (bot) => {
 	setInterval(() => {
 		bot.user.setPresence({
 			activity: {
-				name: config.activities[lastIndex],
+				name: config.activity.list[lastIndex],
 				type: config.activityType || "PLAYING"
 			}
 		});
 		lastIndex++;
-		if (lastIndex >= config.activities.length) lastIndex = 0;
+		if (lastIndex >= config.activity.list.length) lastIndex = 0;
 	}, 5000);
 
 };

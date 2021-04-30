@@ -1,9 +1,11 @@
 {
 	"username": "le Jardinier",
-	"activities": [
-		"start command: ~~help",
-		"developer: valflrt (Synonym')"
-	],
+	"activity": {
+		"list": [
+			"start command: ~~help",
+			"developer: Synonym'#8436 (valflrt on github)"
+		]
+	},
 	"prefix": "~~",
 	"status": "idle"
 }
