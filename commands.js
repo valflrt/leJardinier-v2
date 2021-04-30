@@ -49,7 +49,6 @@ new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
 	execute: args => {
 		let { message, cmdArgs, bot } = args;
-
 		message.embed(`${cmdArgs.length !== 0 ? `${message.author}\ntaux ${cmdArgs.join(" ")}\n${bot.user}\n` : ""}${utils.randomPercentage()}%`);
 	}
 });
@@ -93,6 +92,16 @@ new Command("code", {
 			embed.setURL(require("./package.json").repository.url);
 			return embed;
 		});
+	}
+});
+
+new Command("invite", {
+	description: "Génére un lien pour inviter le bot dans un de vos serveur",
+	execute: args => {
+		let { message, bot } = args;
+		bot.generateInvite({ permissions: "ADMINISTRATOR" })
+			.then(link => message.embed(`Voici un lien pour m'inviter dans votre serveur:\n${link}`))
+
 	}
 });
 
