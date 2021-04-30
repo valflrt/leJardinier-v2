@@ -41,9 +41,7 @@ bot.on("message", async message => {
 
 	if (message.author.bot) return; // skip if the author of the message is a bot
 
-	console.log(message.content.search(/^(\~{2}.+\s)/g));
-
-	console.log(`${message.author.username.cyan}: ${(message.content.includes("~~") === true)
+	console.log(`${message.author.username.cyan}: ${(message.content.includes(config.prefix) === true)
 		? message.content.yellow : message.content}`); // logs every message
 
 	// message sending methods
