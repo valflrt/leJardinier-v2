@@ -1,6 +1,9 @@
 {
 	"username": "le Jardinier",
-	"activityName": "~~help",
+	"activities": [
+		"start command: ~~help",
+		"developer: valflrt (Synonym')"
+	],
 	"prefix": "~~",
 	"status": "idle"
 }

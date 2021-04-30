@@ -1,4 +1,5 @@
 const utils = require("./utils");
+const config = require("./config.json")
 
 module.exports.listen = message => {
 
@@ -61,17 +62,31 @@ module.exports.listen = message => {
 };
 
 module.exports.static = (bot) => {
-	this.current = null;
+
+	let lastNoseTouch = null; // last time you had to touch your noze (each time the hours and seconds are the same. eg: 11:11)
 	setInterval(() => {
 		let hours = new Date().getHours();
 		let minutes = new Date().getMinutes();
 		if (hours == minutes) {
-			if (this.current === `${hours}:${minutes}`) return;
+			if (lastNoseTouch === `${hours}:${minutes}`) return;
 			bot.channels.cache.get("802634814771560518").send(`<@&802634842557644900> touchez votre nez bande de ${utils.randomItem(
 				"patates",
 				"personnes respectables"
 			)} ${utils.randomItem(":3", ":>")}`);
-			this.current = `${hours}:${minutes}`;
+			lastNoseTouch = `${hours}:${minutes}`;
 		};
 	}, 5000);
+
+	let lastIndex = 0;
+	setInterval(() => {
+		bot.user.setPresence({
+			activity: {
+				name: config.activities[lastIndex],
+				type: config.activityType || "PLAYING"
+			}
+		});
+		lastIndex++;
+		if (lastIndex >= config.activities.length) lastIndex = 0;
+	}, 5000);
+
 };

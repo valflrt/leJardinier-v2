@@ -22,21 +22,13 @@ bot.on("ready", async () => {
 	await bot.user.setStatus(config.status)
 		.then(client => console.log(` ${"[+]".green} Status set to ${(client.status).cyan}`));
 
-	await bot.user.setPresence((config.activityName) ? {
+	await bot.user.setPresence((config.activities[0]) ? {
 		activity: {
-			name: config.activityName,
+			name: config.activities[0],
 			type: config.activityType || "PLAYING"
 		}
 	} : null)
-		.then(presence => {
-			console.log(` ${"[+]".green} Presence set to ${presence.activities.shift().name.cyan}`)
-			setInterval(() => bot.user.setPresence({
-				activity: {
-					name: config.activityName,
-					type: config.activityType || "PLAYING"
-				}
-			}), 180000);
-		});
+		.then(presence => console.log(` ${"[+]".green} Presence set to ${presence.activities.shift().name.cyan}`));
 
 	console.log(` ${"[+]".green} Logged in as: ${(bot.user.tag).cyan} - ${(bot.user.id).cyan}`);
 	console.log("\n " + " connected ".bgGreen.black + "\n");
