@@ -100,7 +100,12 @@ new Command("invite", {
 	execute: args => {
 		let { message, bot } = args;
 		bot.generateInvite({ permissions: "ADMINISTRATOR" })
-			.then(link => message.embed(`Voici un lien pour m'inviter dans votre serveur:\n${link}`))
+			.then(link => message.customEmbed((embed) =>
+				embed
+					.setDescription(`Voici un lien pour m'inviter dans votre serveur`)
+					.setTitle("inviter")
+					.setURL(link)
+			))
 
 	}
 });
