@@ -2,10 +2,10 @@
 	"username": "le Jardinier",
 	"activity": {
 		"list": [
-			"j!help pour démarrer",
+			"lj!help",
 			"réalisé par Synonym'#8436 (valflrt sur github)"
-		]
+		],
+		"status": "idle"
 	},
-	"prefix": "j!",
-	"status": "idle"
+	"prefix": "lj!"
 }

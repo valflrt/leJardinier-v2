@@ -19,16 +19,14 @@ bot.on("ready", async () => {
 	await bot.user.setUsername(config.username)
 		.then(client => console.log(` ${"[+]".green} Username set to ${(client.username).cyan}`));
 
-	await bot.user.setStatus(config.status)
-		.then(client => console.log(` ${"[+]".green} Status set to ${(client.status).cyan}`));
-
-	await bot.user.setPresence((config.activity.list[0]) ? {
+	await bot.user.setPresence((config.activity) ? {
+		status: config.activity.status,
 		activity: {
 			name: config.activity.list[0],
 			type: config.activityType || "PLAYING"
 		}
 	} : null)
-		.then(presence => console.log(` ${"[+]".green} Presence set to ${presence.activities.shift().name.cyan}`));
+		.then(() => console.log(` ${"[+]".green} Presence set to ${config.activity.list[1]} and status to ${config.activity.status}`));
 
 	console.log(` ${"[+]".green} Logged in as: ${(bot.user.tag).cyan} - ${(bot.user.id).cyan}`);
 	console.log("\n " + " connected ".bgGreen.black + "\n");
