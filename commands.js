@@ -173,20 +173,4 @@ module.exports.listen = (message, bot) => {
 		}); else message.react("❔");
 	};
 
-	/*if (text.match(new RegExp(`^${config.prefix}`, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
-		text = text.replace(config.prefix, "");
-	
-		let splited = text.split(" ");
-		let cmd = splited.shift();
-	
-		if (commands.has(cmd) === true) {
-			commands.get(cmd).execute({
-				message: message,
-				content: text.replace(`${config.prefix}${cmd}`),
-				bot: bot
-			});
-		} else {
-			message.react("❔");
-		};
-	};*/
 };
