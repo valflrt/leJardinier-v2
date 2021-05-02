@@ -2,6 +2,7 @@ const discord = require("discord.js");
 require("colors");
 
 const commands = require("./commands");
+const router = require("./router");
 const reader = require("./reader");
 const utils = require("./utils");
 
@@ -79,6 +80,7 @@ bot.on("message", async message => {
 	reader.listen(message); // simple fontion reading messages and replying in particular cases
 
 	commands.listen(message, bot); // listen to command calls
+	//router.listen(message, bot);
 
 });
 
