@@ -43,12 +43,6 @@ module.exports.listen = message => {
 	}, () => message.react(`823632553847947315`));
 
 	filter({
-		userIDs: ["564012236851511298"], // Synonym'
-		regex: /sale\sbot/g,
-		message: message
-	}, () => message.channel.send("<:partyingkeqing:823632179212713985>"));
-
-	filter({
 		userIDs: ["418813560739725312"], // meumeu.
 		regex: /eh\sle\sbot/g,
 		message: message

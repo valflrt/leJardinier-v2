@@ -37,19 +37,19 @@ new Command("hey", {
 	}
 });
 
-new Command("vraioufaux", {
+new Command("vrai ou faux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
 	execute: args => {
-		let { message, content, bot } = args;
-		message.embed(`${content.length !== 0 ? `${message.author}\n${content.join(" ")}\n${bot.user}\n` : ""}${utils.randomItem("vrai !", "faux !")}`)
+		let { message, messageContent, bot } = args;
+		message.embed(`${messageContent && `${message.author}\n${messageContent}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
 	}
 });
 
 new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
 	execute: args => {
-		let { message, content, bot } = args;
-		message.embed(`${content.length !== 0 ? `${message.author}\ntaux ${content.join(" ")}\n${bot.user}\n` : ""}${utils.randomPercentage()}%`);
+		let { message, messageContent, bot } = args;
+		message.embed(`${messageContent && `${message.author}\n${messageContent}\n${bot.user}\n`}${utils.randomPercentage()}%`);
 	}
 });
 
@@ -161,27 +161,24 @@ module.exports.listen = (message, bot) => {
 	let content = message.content;
 
 	let commandName;
-
 	commands.forEach((value, key) => {
 		if (content.match(new RegExp(`^${config.prefix}${key}`, "g"))) commandName = key;
 	});
 
-	if (content.match(new RegExp(`^${config.prefix}`, "g")) !== null) {
-		commands.get(commandName).execute({
-			message: message,
-			content: content.replace(`${config.prefix}${commandName}`),
-			bot: bot
-		});
-	} else {
-		message.react("❔");
+	if (content.match(new RegExp(`^${config.prefix}`, "g"))) {
+		if (commandName && commands.has(commandName)) commands.get(commandName).execute({
+			message,
+			messageContent: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), ""),
+			bot
+		}); else message.react("❔");
 	};
 
 	/*if (text.match(new RegExp(`^${config.prefix}`, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
 		text = text.replace(config.prefix, "");
-
+	
 		let splited = text.split(" ");
 		let cmd = splited.shift();
-
+	
 		if (commands.has(cmd) === true) {
 			commands.get(cmd).execute({
 				message: message,
