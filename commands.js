@@ -158,9 +158,25 @@ new Command("detectreaction", {
 */
 
 module.exports.listen = (message, bot) => {
-	let text = message.content;
+	let content = message.content;
 
-	if (text.match(new RegExp(`^${config.prefix}`, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
+	let commandName;
+
+	commands.forEach((value, key) => {
+		if (content.match(new RegExp(`^${config.prefix}${key}`, "g"))) commandName = key;
+	});
+
+	if (content.match(new RegExp(`^${config.prefix}`, "g")) !== null) {
+		commands.get(commandName).execute({
+			message: message,
+			content: content.replace(`${config.prefix}${commandName}`),
+			bot: bot
+		});
+	} else {
+		message.react("❔");
+	};
+
+	/*if (text.match(new RegExp(`^${config.prefix}`, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
 		text = text.replace(config.prefix, "");
 
 		let splited = text.split(" ");
@@ -175,5 +191,5 @@ module.exports.listen = (message, bot) => {
 		} else {
 			message.react("❔");
 		};
-	};
+	};*/
 };

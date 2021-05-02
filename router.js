@@ -1,31 +1,16 @@
 const config = require("./config.json");
 
-class Command {
-	constructor(name, command) {
-		this.name = name;
-		this.description = command.description;
-		this.execute = command.execute;
-	};
-};
-
 class CommandRouter {
 	constructor() {
 		this.router = new Map();
-		this.isRouter = true;
 	};
 
 	setCommand(name, command) {
-		this.router.set(new Command(name, {
-			name: name,
-			...command
+		this.router.set(name, new Command(name, {
+			name, ...command
 		}));
-		return this;
-	};
-
-	setRoute(name) {
-		this.router.set(name, new CommandRouter());
 		return this.router.get(name);
-	}
+	};
 
 	get(key) {
 		return this.router.get(key);
@@ -36,44 +21,70 @@ class CommandRouter {
 	};
 };
 
+class Command {
+	constructor(name, command) {
+		this.name = name;
+		this.description = command.description;
+		this.execute = command.execute;
+		this.subCommands = new Map();
+	};
+
+	setSubCommand(name, command) {
+		this.subCommands.set(name, {
+			name, ...command
+		});
+		return this;
+	};
+};
+
 let router = new CommandRouter();
 
-router.setRoute("test")
-	.setCommand("hey", {
-		description: "hey",
-		execute: () => console.log("hey guys")
-	})
-	.setCommand("no", {
+router.setCommand("test", {
+	description: "hey",
+	execute: args => {
+		let { message } = args;
+		message.embed("test");
+	}
+})
+	.setSubCommand("no", {
 		description: "says no",
-		execute: () => console.log("no")
+		execute: args => {
+			let { message } = args;
+			message.embed("no")
+		}
 	});
 
 module.exports.listen = (message, bot) => {
 	let content = message.content;
 	let prefixRegex = new RegExp(`^${config.prefix}`, "g");
 
+
+
 	if (content.match(prefixRegex).length !== null) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline
 		content = content.replace(prefixRegex, "").split(" ");
 
-		console.log(content);
-
-		const checker = (value, remainingText) => {
-			if (router.has(value) === true) {
-				let route = router.get("value");
-				if (route.isRouter) checker(...arguments);
-				else route.execute({
+		if (router.has(content[0]) === true) {
+			path.push(value);
+			let route = router.get(value);
+			content.shift();
+			if (route.has(content[0])) {
+				let command = route.get(content[0]);
+				content.shift();
+				command.execute({
 					message,
 					remainingText,
 					bot
 				});
 			} else {
-				message.react("❔");
+				route.execute({
+					message,
+					remainingText,
+					bot
+				});
 			};
+		} else {
+			message.react("❔");
 		};
-
-		content.forEach((value, index, array) => {
-			checker(value, array)
-		});
 
 	};
 };

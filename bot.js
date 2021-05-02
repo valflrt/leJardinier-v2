@@ -2,7 +2,6 @@ const discord = require("discord.js");
 require("colors");
 
 const commands = require("./commands");
-const router = require("./router");
 const reader = require("./reader");
 const utils = require("./utils");
 
@@ -27,7 +26,7 @@ bot.on("ready", async () => {
 			type: config.activityType || "PLAYING"
 		}
 	} : null)
-		.then(() => console.log(` ${"[+]".green} Presence set to ${config.activity.list[1]} and status to ${config.activity.status}`));
+		.then(() => console.log(` ${"[+]".green} Presence set to ${config.activity.list[0].cyan} and status to ${config.activity.status.cyan}`));
 
 	console.log(` ${"[+]".green} Logged in as: ${(bot.user.tag).cyan} - ${(bot.user.id).cyan}`);
 	console.log("\n " + " connected ".bgGreen.black + "\n");
@@ -80,7 +79,6 @@ bot.on("message", async message => {
 	reader.listen(message); // simple fontion reading messages and replying in particular cases
 
 	commands.listen(message, bot); // listen to command calls
-	//router.listen(message, bot);
 
 });
 
