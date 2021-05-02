@@ -6,7 +6,7 @@
 
 ## Configuration
 
-To setup your bot, just change values in [config.json](./config.json):
+[config.json](./config.json):
 
 set username:
 ```json
@@ -41,6 +41,12 @@ full exemple:
 	},
 	"prefix": "lj!"
 }
+```
+
+token.json (i made it secret because it enables people to control the bot):
+
+```json
+"put your token here"
 ```
 
 ## Starting the bot
