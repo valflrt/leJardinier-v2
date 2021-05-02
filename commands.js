@@ -40,16 +40,16 @@ new Command("hey", {
 new Command("vraioufaux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
 	execute: args => {
-		let { message, cmdArgs, bot } = args;
-		message.embed(`${cmdArgs.length !== 0 ? `${message.author}\n${cmdArgs.join(" ")}\n${bot.user}\n` : ""}${utils.randomItem("vrai !", "faux !")}`)
+		let { message, content, bot } = args;
+		message.embed(`${content.length !== 0 ? `${message.author}\n${content.join(" ")}\n${bot.user}\n` : ""}${utils.randomItem("vrai !", "faux !")}`)
 	}
 });
 
 new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
 	execute: args => {
-		let { message, cmdArgs, bot } = args;
-		message.embed(`${cmdArgs.length !== 0 ? `${message.author}\ntaux ${cmdArgs.join(" ")}\n${bot.user}\n` : ""}${utils.randomPercentage()}%`);
+		let { message, content, bot } = args;
+		message.embed(`${content.length !== 0 ? `${message.author}\ntaux ${content.join(" ")}\n${bot.user}\n` : ""}${utils.randomPercentage()}%`);
 	}
 });
 
@@ -110,6 +110,8 @@ new Command("invite", {
 	}
 });
 
+//new Command("music")
+
 /*
 
 new Command("testmodify", {
@@ -158,21 +160,20 @@ new Command("detectreaction", {
 module.exports.listen = (message, bot) => {
 	let text = message.content;
 
-	if (text.startsWith(config.prefix) && text.match(new RegExp(config.prefix, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
+	if (text.match(new RegExp(`^${config.prefix}`, "g")).length === 1) { // the second on is useful if the prefix is also used to make discord message formatting. eg: __hello__ -> underline 
 		text = text.replace(config.prefix, "");
 
 		let splited = text.split(" ");
 		let cmd = splited.shift();
-		let args = splited;
 
 		if (commands.has(cmd) === true) {
 			commands.get(cmd).execute({
 				message: message,
-				cmdArgs: args,
+				content: text.replace(`${config.prefix}${cmd}`),
 				bot: bot
 			});
 		} else {
 			message.react("❔");
-		}
+		};
 	};
 };
