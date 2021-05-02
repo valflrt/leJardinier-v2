@@ -10,22 +10,24 @@ To setup your bot, just change values in [config.json](./config.json):
 
 set username:
 ```json
+{
 	"username": "le Jardinier"
 ```
 
 set an activity list to be displayed (switch between each item every 5 seconds):
 ```json
-	"activity": { 
+	"activity": {
 		"list": [
 			"lj!help", 
 			"réalisé par Synonym'#8436 (valflrt sur github)"
 		]
-	}
+	},
 ```
 
 set the prefix:
 ```json
 	"prefix": "lj!"
+}
 ```
 
 ## Starting
