@@ -4,33 +4,46 @@
 
 `npm install`
 
-## configuration
+## Configuration
 
 To setup your bot, just change values in [config.json](./config.json):
 
 set username:
 ```json
-{
-	"username": "le Jardinier"
+"username": "le Jardinier"
 ```
 
 set an activity list to be displayed (switch between each item every 5 seconds):
 ```json
-	"activity": {
-		"list": [
-			"lj!help", 
-			"réalisé par Synonym'#8436 (valflrt sur github)"
-		]
-	},
+"activity": {
+	"list": [
+		"lj!help", 
+		"réalisé par Synonym'#8436 (valflrt sur github)"
+	]
+}
 ```
 
 set the prefix:
 ```json
+"prefix": "lj!"
+```
+
+full exemple:
+```json
+{
+	"username": "le Jardinier",
+	"activity": {
+		"list": [
+			"lj!help",
+			"réalisé par Synonym'#8436 (valflrt sur github)"
+		],
+		"status": "idle"
+	},
 	"prefix": "lj!"
 }
 ```
 
-## Starting
+## Starting the bot
 
 Simple start:
 `npm start`
