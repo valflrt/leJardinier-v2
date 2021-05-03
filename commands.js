@@ -110,7 +110,10 @@ new Command("invite", {
 	}
 });
 
-//new Command("music")
+new Command("music add", {
+	description: "Ajouter une musique (depuis un lien youtube) à la playlist",
+	execute: () => { }
+});
 
 /*
 
