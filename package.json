@@ -15,9 +15,13 @@
     "url": "https://github.com/valflrt/leJardinier-v2/"
   },
   "dependencies": {
+    "@discordjs/opus": "^0.5.0",
     "colors": "^1.4.0",
     "discord.js": "^12.5.1",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
     "mongoose": "^5.12.6",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "youtube-dl": "^3.5.0"
   }
 }
