@@ -171,7 +171,7 @@ module.exports.listen = (message, bot) => {
 	if (content.match(new RegExp(`^${config.prefix}`, "g"))) {
 		if (commandName && commands.has(commandName)) commands.get(commandName).execute({
 			message,
-			messageContent: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), ""),
+			messageContent: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), "").trim(),
 			bot
 		}); else message.react("❔");
 	};
