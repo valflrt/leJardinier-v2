@@ -80,18 +80,19 @@ const connect = async (args, callback) => {
 
 	guilds.get(message.guild.id).setVoiceChannel(voiceChannel);
 	message.embed(`Salon textuel relié`)
-		.then(() => message.embed(`Connection au salon vocal en cours...`)
-			.then(async () => {
+		.then(sent => setTimeout(() => sent.edit(message.embed(`Connection au salon vocal en cours...`))
+			.then(async sent => {
 				try {
 					const voice = await voiceChannel.join();
-					message.embed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`);
+					sent.edit(message.embed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`));
 					guilds.get(message.guild.id).setVoiceDispatcher(voice);
 					callback();
 				} catch (err) {
 					console.log(err);
-					message.embed(`Erreur lors de la connection au salon vocal...`);
+					sent.edit(message.embed(`Erreur lors de la connection au salon vocal...`));
 				};
-			})
+			}), 5000)
+
 		);
 };
 

@@ -138,7 +138,7 @@ new Command("testmodify", {
 		message.customEmbed(embed => {
 			embed.setDescription(`hey je vais changer dans 5 secondes`);
 			return embed;
-		}, (message, embed) => {
+		}).then((message, embed) => {
 			setTimeout(() => {
 				embed.setDescription(`ça y est`);
 				message.edit(embed);
@@ -155,7 +155,7 @@ new Command("detectreaction", {
 		message.customEmbed(embed => {
 			embed.setDescription(`reagi avec :white_check_mark: et je changerai :)`);
 			return embed;
-		}, (sent, embed, requirer) => {
+		}).then((sent, embed, requirer) => {
 			sent.awaitReactions((reaction, user) => ["✅"].includes(reaction.emoji.name) && user.id === requirer.id, { max: 1, time: 30000, errors: ["time"] })
 				.then(collected => {
 					let reaction = collected.first();

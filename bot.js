@@ -54,20 +54,20 @@ bot.on("message", async message => {
 	};
 
 	message.embed = (text, files = []) => {
-		return message.reply(
+		return message.channel.send(
 			utils.defaultEmbed(message, bot)
 				.setDescription(text)
 				.attachFiles(files)
 		);
 	};
 
-	message.customEmbed = (config, then = () => { }, files = []) => {
+	message.customEmbed = (config, files = []) => {
 		let embed = utils.defaultEmbed(message, bot)
 			.attachFiles(files);
 
 		let newEmbed = config(embed);
 
-		message.channel.send(newEmbed).then(sent => then(sent, embed, message.author));
+		return message.channel.send(newEmbed);
 	};
 
 	message.simple = text => {
