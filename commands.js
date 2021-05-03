@@ -40,16 +40,16 @@ new Command("hey", {
 new Command("vrai ou faux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
 	execute: args => {
-		let { message, messageContent, bot } = args;
-		message.embed(`${messageContent && `${message.author}\n${messageContent}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
+		let { message, content, bot } = args;
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
 	}
 });
 
 new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
 	execute: args => {
-		let { message, messageContent, bot } = args;
-		message.embed(`${messageContent && `${message.author}\n${messageContent}\n${bot.user}\n`}${utils.randomPercentage()}%`);
+		let { message, content, bot } = args;
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage()}%`);
 	}
 });
 
@@ -66,7 +66,7 @@ new Command("hug", {
 				message.customEmbed(embed => embed
 					.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
 					.setImage(data.url)
-				)
+				);
 			});
 
 	}
@@ -110,9 +110,22 @@ new Command("invite", {
 	}
 });
 
+let { add, connect, play } = require("./music");
+
 new Command("music add", {
 	description: "Ajouter une musique (depuis un lien youtube) à la playlist",
-	execute: () => { }
+	execute: args => {
+		add(args);
+	}
+});
+
+new Command("music play", {
+	description: "Ajouter une musique (depuis un lien youtube) à la playlist",
+	execute: async args => {
+		await connect(args, () => {
+			play(args);
+		});
+	}
 });
 
 /*
@@ -171,7 +184,7 @@ module.exports.listen = (message, bot) => {
 	if (content.match(new RegExp(`^${config.prefix}`, "g"))) {
 		if (commandName && commands.has(commandName)) commands.get(commandName).execute({
 			message,
-			messageContent: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), "").trim(),
+			content: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), "").trim(),
 			bot
 		}); else message.react("❔");
 	};

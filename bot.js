@@ -54,7 +54,7 @@ bot.on("message", async message => {
 	};
 
 	message.embed = (text, files = []) => {
-		message.reply(
+		return message.reply(
 			utils.defaultEmbed(message, bot)
 				.setDescription(text)
 				.attachFiles(files)
