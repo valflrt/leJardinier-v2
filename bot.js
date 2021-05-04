@@ -76,6 +76,15 @@ bot.on("message", async message => {
 		return message.channel.send(newEmbed);
 	};
 
+	message.returnCustomEmbed = (config, files = []) => {
+		let embed = utils.defaultEmbed(message, bot)
+			.attachFiles(files);
+
+		let newEmbed = config(embed);
+
+		return newEmbed;
+	};
+
 	message.simple = text => {
 		message.channel.send(text);
 	};

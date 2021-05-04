@@ -8,7 +8,12 @@ class Song {
 		this.title = videoDetails.title;
 		this.url = videoDetails.video_url;
 		this.videoDetails = videoDetails;
-	}
+		return {
+			then: (callback) => {
+				callback()
+			}
+		}
+	};
 
 	play(guild, args) {
 		return new Promise(async (resolve, reject) => {
@@ -60,15 +65,19 @@ guilds = new Map();
 const addSong = async (args) => {
 	let { message, content } = args;
 	let song = new Song();
-	await song.setVideoDetails(content);
-	if (!guilds.has(message.guild.id)) guilds.set(message.guild.id, new GuildQueue(args));
-	guilds.get(message.guild.id).addSong(song);
-	message.customEmbed(embed => embed
-		.setDescription(`Musique ajoutée à la playlist avec succès ${utils.randomItem(":3", ":)", "!")}`)
-		.setThumbnail(song.videoDetails.thumbnails.url)
-		.setTitle(song.title)
-		.setURL(song.url)
-	);
+	message.embed(`Recherche de la musique...`)
+		.then(sent => song.setVideoDetails(content)
+			.then(() => setTimeout(() => {
+				if (!guilds.has(message.guild.id)) guilds.set(message.guild.id, new GuildQueue(args));
+				guilds.get(message.guild.id).addSong(song);
+				sent.edit(message.returnCustomEmbed(embed => embed
+					.setDescription(`Musique ajoutée à la playlist avec succès ${utils.randomItem(":3", ":)", "!")}`)
+					.setThumbnail(song.videoDetails.thumbnails.url)
+					.setTitle(song.title)
+					.setURL(song.url))
+				);
+			}, 2000))
+		);
 };
 
 const startMusic = async (args) => {
