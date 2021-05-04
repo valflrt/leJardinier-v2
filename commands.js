@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 
 const config = require("./config.json");
 const utils = require("./utils");
+let { add, connect, play, stop } = require("./music");
 
 const commands = new Map();
 
@@ -82,6 +83,29 @@ new Command("pdp", {
 	}
 });
 
+new Command("music add", {
+	description: "Ajouter une musique à la playlist (depuis un lien youtube)",
+	execute: args => {
+		add(args);
+	}
+});
+
+new Command("music play", {
+	description: "Jouer la playlist",
+	execute: async args => {
+		await connect(args, () => {
+			play(args);
+		});
+	}
+});
+
+new Command("music stop", {
+	description: "Arreter la musique",
+	execute: args => {
+		stop(args);
+	}
+});
+
 new Command("code", {
 	description: "Voire le code du bot (github)",
 	execute: args => {
@@ -107,24 +131,6 @@ new Command("invite", {
 					.setURL(link)
 			))
 
-	}
-});
-
-let { add, connect, play } = require("./music");
-
-new Command("music add", {
-	description: "Ajouter une musique (depuis un lien youtube) à la playlist",
-	execute: args => {
-		add(args);
-	}
-});
-
-new Command("music play", {
-	description: "Ajouter une musique (depuis un lien youtube) à la playlist",
-	execute: async args => {
-		await connect(args, () => {
-			play(args);
-		});
 	}
 });
 

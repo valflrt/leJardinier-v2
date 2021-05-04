@@ -10,12 +10,13 @@ class Song {
 		this.videoDetails = videoDetails;
 	}
 
-	play(guild) {
-		return new Promise((resolve, reject) => {
+	play(guild, args) {
+		return new Promise(async (resolve, reject) => {
 			try {
-				guild.voiceDispatcher.play(ytdl(this.url))
+				await guild.voiceDispatcher.play(ytdl(this.url))
 					.on("finish", () => resolve())
 					.on("error", (err) => reject(err));
+				args.message.embed(`Playing "${this.title}" ${utils.randomItem(":3", ":)", "!")}`)
 			} catch (err) {
 				reject(err);
 			};
@@ -73,25 +74,31 @@ const add = async (args) => {
 const connect = async (args, callback) => {
 	let { message, bot } = args;
 
+	let currentGuild = guilds.get(message.guild.id);
+
 	let voiceChannel = message.member.voice.channel;
 	if (!voiceChannel) return message.embed(`Tu dois être dans un salon vocal pour pouvoir entendre la musique...`);
 	let permissions = voiceChannel.permissionsFor(bot.user);
 	if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) return message.embed(`Je n'ai pas la permission de rejoindre ce salon...`)
 
-	guilds.get(message.guild.id).setVoiceChannel(voiceChannel);
+	if (!currentGuild || currentGuild.queue.length === 0) return message.embed(`La playlist est vide...`);
+
+	currentGuild.setVoiceChannel(voiceChannel);
 	message.embed(`Salon textuel relié`)
-		.then(sent => setTimeout(() => sent.edit(message.embed(`Connection au salon vocal en cours...`))
-			.then(async sent => {
-				try {
-					const voice = await voiceChannel.join();
-					sent.edit(message.embed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`));
-					guilds.get(message.guild.id).setVoiceDispatcher(voice);
-					callback();
-				} catch (err) {
-					console.log(err);
-					sent.edit(message.embed(`Erreur lors de la connection au salon vocal...`));
-				};
-			}), 5000)
+		.then(sent => setTimeout(() => sent.edit(message.returnEmbed(`Connection au salon vocal en cours...`))
+			.then(sent => {
+				setTimeout(async () => {
+					try {
+						const voice = await voiceChannel.join();
+						sent.edit(message.returnEmbed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`));
+						guilds.get(message.guild.id).setVoiceDispatcher(voice);
+						callback();
+					} catch (err) {
+						console.log(err);
+						sent.edit(message.returnEmbed(`Erreur lors de la connection au salon vocal...`));
+					};
+				}, 1000)
+			}), 1000)
 
 		);
 };
@@ -104,7 +111,7 @@ const play = (args) => {
 		return message.embed(`La playlist est vide...`);
 	};
 	currentGuild.next()
-		.play(currentGuild)
+		.play(currentGuild, args)
 		.then(() => play(args))
 		.catch(err => {
 			console.log(err);
@@ -113,4 +120,12 @@ const play = (args) => {
 		});
 };
 
-module.exports = { add, connect, play };
+const stop = async (args) => {
+	let { message } = args;
+	let currentGuild = guilds.get(message.guild.id);
+	await currentGuild.voiceDispatcher.disconnect();
+	await currentGuild.voiceChannel.leave();
+	message.embed(`Musique stoppée avec succès`)
+};
+
+module.exports = { add, connect, play, stop };
