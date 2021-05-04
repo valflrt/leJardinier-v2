@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 const config = require("./config.json");
 const utils = require("./utils");
-let { add, connect, play, stop } = require("./music");
+let { addSong, startMusic, stopMusic, skipSong } = require("./music");
 
 const commands = new Map();
 
@@ -85,25 +85,27 @@ new Command("pdp", {
 
 new Command("music add", {
 	description: "Ajouter une musique à la playlist (depuis un lien youtube)",
-	execute: args => {
-		add(args);
-	}
+	execute: args => addSong(args)
 });
 
 new Command("music play", {
 	description: "Jouer la playlist",
-	execute: async args => {
-		await connect(args, () => {
-			play(args);
-		});
-	}
+	execute: args => startMusic(args)
 });
 
 new Command("music stop", {
 	description: "Arreter la musique",
-	execute: args => {
-		stop(args);
-	}
+	execute: args => stopMusic(args)
+});
+
+new Command("music stop", {
+	description: "Arreter la musique",
+	execute: args => stopMusic(args)
+});
+
+new Command("music skip", {
+	description: "Passer cette musique",
+	execute: args => skipSong(args)
 });
 
 new Command("code", {

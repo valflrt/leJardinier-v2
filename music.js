@@ -57,7 +57,7 @@ class GuildQueue {
 
 guilds = new Map();
 
-const add = async (args) => {
+const addSong = async (args) => {
 	let { message, content } = args;
 	let song = new Song();
 	await song.setVideoDetails(content);
@@ -71,7 +71,7 @@ const add = async (args) => {
 	);
 };
 
-const connect = async (args, callback) => {
+const startMusic = async (args) => {
 	let { message, bot } = args;
 
 	let currentGuild = guilds.get(message.guild.id);
@@ -87,16 +87,18 @@ const connect = async (args, callback) => {
 	message.embed(`Salon textuel relié`)
 		.then(sent => setTimeout(() => sent.edit(message.returnEmbed(`Connection au salon vocal en cours...`))
 			.then(sent => {
-				setTimeout(async () => {
-					try {
-						const voice = await voiceChannel.join();
-						sent.edit(message.returnEmbed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`));
-						guilds.get(message.guild.id).setVoiceDispatcher(voice);
-						callback();
-					} catch (err) {
-						console.log(err);
-						sent.edit(message.returnEmbed(`Erreur lors de la connection au salon vocal...`));
-					};
+				setTimeout(() => {
+					voiceChannel.join()
+						.then(voice => {
+							sent.edit(message.returnEmbed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`));
+							guilds.get(message.guild.id).setVoiceDispatcher(voice);
+							play(args);
+						})
+						.catch(err => {
+							console.log(err);
+							sent.edit(message.returnEmbed(`Erreur lors de la connection au salon vocal...`));
+
+						})
 				}, 1000)
 			}), 1000)
 
@@ -107,6 +109,7 @@ const play = (args) => {
 	let { message } = args;
 	let currentGuild = guilds.get(message.guild.id);
 	if (currentGuild.queue.length === 0) {
+		currentGuild.voiceDispatcher.disconnect();
 		currentGuild.voiceChannel.leave();
 		return message.embed(`La playlist est vide...`);
 	};
@@ -120,12 +123,21 @@ const play = (args) => {
 		});
 };
 
-const stop = async (args) => {
+const stopMusic = async (args) => {
 	let { message } = args;
-	let currentGuild = guilds.get(message.guild.id);
-	await currentGuild.voiceDispatcher.disconnect();
-	await currentGuild.voiceChannel.leave();
-	message.embed(`Musique stoppée avec succès`)
+	if (guilds.has(message.guild.id) && guilds.get(message.guild.id).voiceDispatcher) {
+		let currentGuild = guilds.get(message.guild.id);
+		await currentGuild.voiceDispatcher.disconnect();
+		await currentGuild.voiceChannel.leave();
+		message.embed(`Musique stoppée avec succès`);
+	} else message.embed(`Tu dois d'abord démarrer la musique pour la stopper !`);
 };
 
-module.exports = { add, connect, play, stop };
+const skipSong = async (args) => {
+	let { message } = args;
+	if (guilds.has(message.guild.id) && guilds.get(message.guild.id).voiceDispatcher) {
+		play(args);
+	} else message.embed(`Tu dois d'abord démarrer la musique pour la mettre sur play !`);
+};
+
+module.exports = { addSong, startMusic, stopMusic, skipSong };
