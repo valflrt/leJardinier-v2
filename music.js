@@ -3,16 +3,15 @@ const ytdl = require("ytdl-core");
 const utils = require("./utils");
 
 class Song {
-	async setVideoDetails(content) {
-		let { videoDetails } = await ytdl.getInfo(content);
-		this.title = videoDetails.title;
-		this.url = videoDetails.video_url;
-		this.videoDetails = videoDetails;
-		return {
-			then: (callback) => {
-				callback()
-			}
-		}
+	setVideoDetails(url) {
+		return new Promise(async (resolve, reject) => {
+			if (ytdl.validateURL(url) === false) return reject();
+			let { videoDetails } = await ytdl.getInfo(url);
+			this.title = videoDetails.title;
+			this.url = videoDetails.video_url;
+			this.videoDetails = videoDetails;
+			resolve();
+		});
 	};
 
 	play(guild, args) {
@@ -67,16 +66,16 @@ const addSong = async (args) => {
 	let song = new Song();
 	message.embed(`Recherche de la musique...`)
 		.then(sent => song.setVideoDetails(content)
-			.then(() => setTimeout(() => {
+			.then(() => {
 				if (!guilds.has(message.guild.id)) guilds.set(message.guild.id, new GuildQueue(args));
 				guilds.get(message.guild.id).addSong(song);
 				sent.edit(message.returnCustomEmbed(embed => embed
 					.setDescription(`Musique ajoutée à la playlist avec succès ${utils.randomItem(":3", ":)", "!")}`)
-					.setThumbnail(song.videoDetails.thumbnails.url)
+					.setImage(song.videoDetails.thumbnails.url)
 					.setTitle(song.title)
 					.setURL(song.url))
 				);
-			}, 2000))
+			}).catch(() => sent.edit(message.returnEmbed(`Cette vidéo n'existe pas ou est indisponible`)))
 		);
 };
 
@@ -146,7 +145,7 @@ const skipSong = async (args) => {
 	let { message } = args;
 	if (guilds.has(message.guild.id) && guilds.get(message.guild.id).voiceDispatcher) {
 		play(args);
-	} else message.embed(`Tu dois d'abord démarrer la musique pour la mettre sur play !`);
+	} else message.embed(`Tu dois d'abord démarrer la musique pour la passer !`);
 };
 
 module.exports = { addSong, startMusic, stopMusic, skipSong };
