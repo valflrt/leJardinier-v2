@@ -109,7 +109,6 @@ const startMusic = async (args) => {
 						})
 				}, 1000)
 			}), 1000)
-
 		);
 };
 
