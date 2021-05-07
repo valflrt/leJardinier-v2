@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 
 const config = require("./config.json");
 const utils = require("./utils");
+let { addSong, startMusic, stopMusic, skipSong } = require("./music");
 
 const commands = new Map();
 
@@ -40,16 +41,16 @@ new Command("hey", {
 new Command("vrai ou faux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
 	execute: args => {
-		let { message, messageContent, bot } = args;
-		message.embed(`${messageContent && `${message.author}\n${messageContent}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
+		let { message, content, bot } = args;
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
 	}
 });
 
 new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
 	execute: args => {
-		let { message, messageContent, bot } = args;
-		message.embed(`${messageContent && `${message.author}\n${messageContent}\n${bot.user}\n`}${utils.randomPercentage()}%`);
+		let { message, content, bot } = args;
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage()}%`);
 	}
 });
 
@@ -66,7 +67,7 @@ new Command("hug", {
 				message.customEmbed(embed => embed
 					.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
 					.setImage(data.url)
-				)
+				);
 			});
 
 	}
@@ -80,6 +81,31 @@ new Command("pdp", {
 		if (mentions.length === 0) mentions = [message.author];
 		message.embed(`Voici ${(mentions.length === 1) ? "la photo de profil" : "les photos de profil"} de ${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`, mentions.map(user => user.displayAvatarURL()));
 	}
+});
+
+new Command("music add", {
+	description: "Ajouter une musique à la playlist (depuis un lien youtube)",
+	execute: args => addSong(args)
+});
+
+new Command("music play", {
+	description: "Jouer la playlist",
+	execute: args => startMusic(args)
+});
+
+new Command("music stop", {
+	description: "Arreter la musique",
+	execute: args => stopMusic(args)
+});
+
+new Command("music stop", {
+	description: "Arreter la musique",
+	execute: args => stopMusic(args)
+});
+
+new Command("music skip", {
+	description: "Passer cette musique",
+	execute: args => skipSong(args)
 });
 
 new Command("code", {
@@ -110,8 +136,6 @@ new Command("invite", {
 	}
 });
 
-//new Command("music")
-
 /*
 
 new Command("testmodify", {
@@ -122,7 +146,7 @@ new Command("testmodify", {
 		message.customEmbed(embed => {
 			embed.setDescription(`hey je vais changer dans 5 secondes`);
 			return embed;
-		}, (message, embed) => {
+		}).then((message, embed) => {
 			setTimeout(() => {
 				embed.setDescription(`ça y est`);
 				message.edit(embed);
@@ -139,7 +163,7 @@ new Command("detectreaction", {
 		message.customEmbed(embed => {
 			embed.setDescription(`reagi avec :white_check_mark: et je changerai :)`);
 			return embed;
-		}, (sent, embed, requirer) => {
+		}).then((sent, embed, requirer) => {
 			sent.awaitReactions((reaction, user) => ["✅"].includes(reaction.emoji.name) && user.id === requirer.id, { max: 1, time: 30000, errors: ["time"] })
 				.then(collected => {
 					let reaction = collected.first();
@@ -168,7 +192,7 @@ module.exports.listen = (message, bot) => {
 	if (content.match(new RegExp(`^${config.prefix}`, "g"))) {
 		if (commandName && commands.has(commandName)) commands.get(commandName).execute({
 			message,
-			messageContent: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), ""),
+			content: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), "").trim(),
 			bot
 		}); else message.react("❔");
 	};
