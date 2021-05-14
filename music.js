@@ -18,7 +18,10 @@ class Song {
 		return new Promise(async (resolve, reject) => {
 			try {
 				await guild.voiceDispatcher.play(ytdl(this.url))
-					.on("finish", () => resolve())
+					.on("finish", () => {
+						guild.queue.shift();
+						resolve();
+					})
 					.on("error", (err) => reject(err));
 				args.message.embed(`Playing "${this.title}" ${utils.randomItem(":3", ":)", "!")}`)
 			} catch (err) {
@@ -55,7 +58,7 @@ class GuildQueue {
 	};
 
 	next() {
-		return this.queue.shift();
+		return this.queue[0];
 	};
 }
 

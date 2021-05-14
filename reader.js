@@ -53,6 +53,7 @@ module.exports.listen = message => {
 		regex: /^[Aa]nticonstitutionnellement(\s\?|\?)?$/g,
 		message: message
 	}, () => message.simple(`oui maître, exactement`));
+
 };
 
 module.exports.static = (bot) => {

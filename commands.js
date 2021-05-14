@@ -9,8 +9,9 @@ const commands = new Map();
 class Command {
 	constructor(name, command) {
 		this.name = name;
-		this.description = command.description;
-		this.execute = command.execute;
+		this.description = command.description || "";
+		this.execute = command.execute || (() => { });
+		this.hidden = command.hidden || false;
 		commands.set(name, this);
 	};
 };
@@ -23,6 +24,7 @@ new Command("help", {
 		let embed = utils.defaultEmbed(message, bot);
 
 		commands.forEach((value, key) => {
+			if (value.hidden === true) return;
 			embed.addField(`${config.prefix}${key}`, `${value.description}`);
 		});
 
@@ -132,6 +134,24 @@ new Command("invite", {
 					.setTitle("inviter")
 					.setURL(link)
 			))
+
+	}
+});
+
+new Command("react", {
+	hidden: true,
+	execute: (args) => {
+		let { message, content, bot } = args;
+
+		if (message.author.id !== "564012236851511298") return;
+
+		let splited = content.split(" ");
+
+		message.channel.messages.fetch(splited[0])
+			.then(fetched => {
+				message.delete();
+				fetched.react(splited[1]);
+			});
 
 	}
 });
