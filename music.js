@@ -146,6 +146,7 @@ const stopMusic = async (args) => {
 const skipSong = async (args) => {
 	let { message } = args;
 	if (guilds.has(message.guild.id) && guilds.get(message.guild.id).voiceDispatcher) {
+		guilds.get(message.guild.id).next();
 		play(args);
 	} else message.embed(`Tu dois d'abord démarrer la musique pour la passer !`);
 };
