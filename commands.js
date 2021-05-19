@@ -3,13 +3,15 @@ const fetch = require("node-fetch");
 const config = require("./config.json");
 const utils = require("./utils");
 let { addSong, startMusic, stopMusic, skipSong } = require("./music");
+const { Emoji } = require("discord.js");
 
 const commands = new Map();
 
 class Command {
 	constructor(name, command) {
 		this.name = name;
-		this.description = command.description || "";
+		this.description = command.description;
+		this.syntax = `${config.prefix}${command.syntax}`;
 		this.execute = command.execute || (() => { });
 		this.hidden = command.hidden || false;
 		commands.set(name, this);
@@ -18,14 +20,15 @@ class Command {
 
 new Command("help", {
 	description: "Donne une liste de toutes les commandes disponibles",
+	syntax: `help`,
 	execute: args => {
 		let { message, bot } = args;
 
 		let embed = utils.defaultEmbed(message, bot);
 
-		commands.forEach((value, key) => {
-			if (value.hidden === true) return;
-			embed.addField(`${config.prefix}${key}`, `${value.description}`);
+		commands.forEach((command) => {
+			if (command.hidden === true) return;
+			embed.addField(`${command.syntax}`, `${command.description}`);
 		});
 
 		message.reply(embed);
@@ -34,6 +37,7 @@ new Command("help", {
 
 new Command("hey", {
 	description: "Dire bonjour au bot",
+	syntax: `hey`,
 	execute: args => {
 		let { message } = args;
 		message.embed(`${utils.randomItem("hey", "Salut", "Yo")} ${message.author} ${utils.randomItem(":3", ":)", "!")}`);
@@ -42,6 +46,7 @@ new Command("hey", {
 
 new Command("vrai ou faux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
+	syntax: `vrai ou faux <?phrase>`,
 	execute: args => {
 		let { message, content, bot } = args;
 		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
@@ -50,6 +55,7 @@ new Command("vrai ou faux", {
 
 new Command("taux", {
 	description: "Donne un taux aléatoire de quelque chose",
+	syntax: `taux <?phrase>`,
 	execute: args => {
 		let { message, content, bot } = args;
 		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage()}%`);
@@ -58,6 +64,7 @@ new Command("taux", {
 
 new Command("hug", {
 	description: "Hug somebody",
+	syntax: `hug <?mention>`,
 	execute: args => {
 		let { message } = args;
 		let mentions = message.mentions.users.array();
@@ -77,6 +84,7 @@ new Command("hug", {
 
 new Command("pdp", {
 	description: "Obtenir la photo de profil d'un membre du serveur",
+	syntax: `pdp <?mention>`,
 	execute: args => {
 		let { message } = args;
 		let mentions = message.mentions.users.array();
@@ -86,32 +94,32 @@ new Command("pdp", {
 });
 
 new Command("music add", {
-	description: "Ajouter une musique à la playlist (depuis un lien youtube)",
+	description: "Ajouter une musique à la playlist",
+	syntax: `music add <url youtube>`,
 	execute: args => addSong(args)
 });
 
 new Command("music play", {
 	description: "Jouer la playlist",
+	syntax: `music play`,
 	execute: args => startMusic(args)
 });
 
 new Command("music stop", {
 	description: "Arreter la musique",
-	execute: args => stopMusic(args)
-});
-
-new Command("music stop", {
-	description: "Arreter la musique",
+	syntax: `music stop`,
 	execute: args => stopMusic(args)
 });
 
 new Command("music skip", {
 	description: "Passer cette musique",
+	syntax: `music skip`,
 	execute: args => skipSong(args)
 });
 
 new Command("code", {
 	description: "Voire le code du bot (github)",
+	syntax: `code`,
 	execute: args => {
 		let { message } = args;
 		message.customEmbed(embed => {
@@ -125,6 +133,7 @@ new Command("code", {
 
 new Command("invite", {
 	description: "Génére un lien pour inviter le bot dans un de vos serveur",
+	syntax: `invite`,
 	execute: args => {
 		let { message, bot } = args;
 		bot.generateInvite({ permissions: "ADMINISTRATOR" })
@@ -138,12 +147,26 @@ new Command("invite", {
 	}
 });
 
-new Command("react", {
-	hidden: true,
-	execute: (args) => {
+new Command("emote send", {
+	description: `Le bot envoie une emote à l'aide un id d'emote`,
+	syntax: `emote send <id d'emote>`,
+	execute: async (args) => {
 		let { message, content, bot } = args;
 
-		if (message.author.id !== "564012236851511298") return;
+		let splited = content.split(" ");
+
+		let emote = await bot.emojis.cache.get(splited[0]);
+
+		message.simple(`<${emote.animated ? "a" : ""}:${emote.name}:${emote.id}>`);
+
+	}
+});
+
+new Command("emote react", {
+	description: `Fait réagir le bot avec un id d'emote et un id de message`,
+	syntax: `emote react <id de message> <id d'emote>`,
+	execute: (args) => {
+		let { message, content } = args;
 
 		let splited = content.split(" ");
 
@@ -152,6 +175,21 @@ new Command("react", {
 				message.delete();
 				fetched.react(splited[1]);
 			});
+
+	}
+});
+
+new Command("emote spam", {
+	description: `Le bot envoie toutes les emotes de sa connaissance`,
+	syntax: `emote spam`,
+	execute: async (args) => {
+		let { message, bot } = args;
+
+		let emotes = await bot.emojis.cache;
+
+		emotes.forEach((emote) => {
+			message.simple(`<${emote.animated ? "a" : ""}:${emote.name}:${emote.id}>`);
+		});
 
 	}
 });
