@@ -3,7 +3,6 @@ const fetch = require("node-fetch");
 const config = require("./config.json");
 const utils = require("./utils");
 let { addSong, startMusic, stopMusic, skipSong } = require("./music");
-const { Emoji } = require("discord.js");
 
 const commands = new Map();
 
