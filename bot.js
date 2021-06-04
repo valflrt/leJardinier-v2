@@ -37,10 +37,10 @@ bot.on("ready", async () => {
 
 bot.on("message", async message => {
 
-	if (message.author.bot) return; // skip if the author of the message is a bot
-
 	console.log(`${message.author.username.cyan}: ${(message.content.includes(config.prefix) === true)
 		? message.content.yellow : message.content}`); // logs every message
+
+	if (message.author.bot) return; // skip if the author of the message is a bot
 
 	// message sending methods
 
