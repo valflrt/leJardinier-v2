@@ -5,15 +5,15 @@ module.exports.listen = message => {
 
 	let { content } = message;
 
-	if (content.match(/[Nn][Oo]+[Nn]$/g) !== null) {
+	if (content.match(/[Nn][Oo]+[Nn]((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple("*bril*");
 	};
 
-	if (content.match(/[Qq][Uu][Oo][Ii]((\s)?(\?)+)?$/g) !== null) {
+	if (content.match(/[Qq][Uu][Oo][Ii]((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple("*feur*");
 	};
 
-	if (content.match(/[Oo][Uu][Ii]+$/g) !== null) {
+	if (content.match(/[Oo][Uu][Ii]+((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple(utils.randomItem("*stiti*", "*fi*"));
 	};
 
