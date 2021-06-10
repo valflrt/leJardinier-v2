@@ -18,4 +18,54 @@ const defaultEmbed = (message, bot) => new discord.MessageEmbed()
 	.setAuthor(bot.user.username, "https://media.discordapp.net/attachments/749765499998437489/823241819801780254/36fb6d778b4d4a108ddcdefb964b3cc0.webp")
 	.setTimestamp();
 
-module.exports = { randomItem, randomNumber, randomPercentage, defaultEmbed };
+const setupMessage = (messageInfo) => {
+
+	let { message, bot } = messageInfo;
+
+	function mention(text) {
+		return (text.includes(`<@${message.author.id}>`) === true) ?
+			"" : `${message.author}\n`;
+	};
+
+	message.answer = (text, files) => {
+		message.channel.send(`${mention(text)}${text}`, files || {});
+	};
+
+	message.embed = (text, files = []) => {
+		return message.channel.send(
+			utils.defaultEmbed(message, bot)
+				.setDescription(text)
+				.attachFiles(files)
+		);
+	};
+
+	message.returnEmbed = (text, files = []) => {
+		return utils.defaultEmbed(message, bot)
+			.setDescription(text)
+			.attachFiles(files)
+	};
+
+	message.customEmbed = (config, files = []) => {
+		let embed = utils.defaultEmbed(message, bot)
+			.attachFiles(files);
+
+		let newEmbed = config(embed);
+
+		return message.channel.send(newEmbed);
+	};
+
+	message.returnCustomEmbed = (config, files = []) => {
+		let embed = utils.defaultEmbed(message, bot)
+			.attachFiles(files);
+
+		let newEmbed = config(embed);
+
+		return newEmbed;
+	};
+
+	message.simple = text => {
+		message.channel.send(text);
+	};
+}
+
+module.exports = { randomItem, randomNumber, randomPercentage, defaultEmbed, setupMessage };

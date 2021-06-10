@@ -250,8 +250,9 @@ new Command("detectreaction", {
 
 */
 
-module.exports.listen = (message, bot) => {
-	let content = message.content;
+module.exports.listen = (messageInfo) => {
+	let { message, bot } = messageInfo,
+		content = message.content;
 
 	let commandName;
 	commands.forEach((value, key) => {

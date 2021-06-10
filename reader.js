@@ -1,9 +1,10 @@
 const utils = require("./utils");
 const config = require("./config.json")
 
-module.exports.listen = message => {
+module.exports.listen = messageInfo => {
 
-	let { content } = message;
+	let { message } = messageInfo,
+		{ content } = message;
 
 	if (content.match(/[Nn][Oo]+[Nn]((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple("*bril*");
