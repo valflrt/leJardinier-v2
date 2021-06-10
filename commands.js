@@ -61,6 +61,18 @@ new Command("taux", {
 	}
 });
 
+new Command("choose", {
+	description: "Choisi une personne aléatoire dans le serveur",
+	syntax: `choose <?phrase>`,
+	execute: args => {
+		let { message, content, bot } = args;
+		message.guild.members.fetch()
+			.then(members => {
+				message.embed(`${content && `${message.author}\n${content}\n${bot.user}\nLa personne choisie est ${members.random()}`}`);
+			});
+	}
+});
+
 new Command("hug", {
 	description: "Hug somebody",
 	syntax: `hug <?mention>`,
