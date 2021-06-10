@@ -43,58 +43,14 @@ bot.on("message", async message => {
 
 	if (message.author.bot) return; // skip if the author of the message is a bot
 
-	// message sending methods
+	let messageInfo = { message: message, bot: bot }; // default required info to pass to functions
 
-	function mention(text) {
-		return (text.includes(`<@${message.author.id}>`) === true) ?
-			"" : `${message.author}\n`;
-	};
-
-	message.answer = (text, files) => {
-		message.channel.send(`${mention(text)}${text}`, files || {});
-	};
-
-	message.embed = (text, files = []) => {
-		return message.channel.send(
-			utils.defaultEmbed(message, bot)
-				.setDescription(text)
-				.attachFiles(files)
-		);
-	};
-
-	message.returnEmbed = (text, files = []) => {
-		return utils.defaultEmbed(message, bot)
-			.setDescription(text)
-			.attachFiles(files)
-	};
-
-	message.customEmbed = (config, files = []) => {
-		let embed = utils.defaultEmbed(message, bot)
-			.attachFiles(files);
-
-		let newEmbed = config(embed);
-
-		return message.channel.send(newEmbed);
-	};
-
-	message.returnCustomEmbed = (config, files = []) => {
-		let embed = utils.defaultEmbed(message, bot)
-			.attachFiles(files);
-
-		let newEmbed = config(embed);
-
-		return newEmbed;
-	};
-
-	message.simple = text => {
-		message.channel.send(text);
-	};
+	utils.setupMessage(messageInfo); // setup message (adding methods)
 
 	/* listeners */
 
-	reader.listen(message); // simple fontion reading messages and replying in particular cases
-
-	commands.listen(message, bot); // listen to command calls
+	reader.listen(messageInfo); // simple fontion reading messages and replying in particular cases
+	commands.listen(messageInfo); // listen to command calls
 
 });
 
