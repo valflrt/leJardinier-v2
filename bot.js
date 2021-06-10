@@ -43,11 +43,12 @@ bot.on("message", async message => {
 
 	if (message.author.bot) return; // skip if the author of the message is a bot
 
-	let messageInfo = { message: message, bot: bot }; // default required info to pass to functions
+	// setup
 
+	let messageInfo = { message: message, bot: bot }; // default required info to pass to functions
 	utils.setupMessage(messageInfo); // setup message (adding methods)
 
-	/* listeners */
+	// listeners
 
 	reader.listen(messageInfo); // simple fontion reading messages and replying in particular cases
 	commands.listen(messageInfo); // listen to command calls
