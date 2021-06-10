@@ -25,10 +25,21 @@ new Command("help", {
 
 		let embed = utils.defaultEmbed(message, bot);
 
+		let commandArray = new Array();
 		commands.forEach((command) => {
 			if (command.hidden === true) return;
+			commandArray.push(command);
 			embed.addField(`${command.syntax}`, `${command.description}`);
 		});
+
+		let formattedArray = new Array();
+
+		let i = 0;
+		let length = Math.round(commandArray.length / 5);
+
+		for (i = 0; i <= length; i++) {
+
+		};
 
 		message.reply(embed);
 	}

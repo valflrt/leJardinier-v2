@@ -33,20 +33,20 @@ const setupMessage = (messageInfo) => {
 
 	message.embed = (text, files = []) => {
 		return message.channel.send(
-			utils.defaultEmbed(message, bot)
+			defaultEmbed(message, bot)
 				.setDescription(text)
 				.attachFiles(files)
 		);
 	};
 
 	message.returnEmbed = (text, files = []) => {
-		return utils.defaultEmbed(message, bot)
+		return defaultEmbed(message, bot)
 			.setDescription(text)
 			.attachFiles(files)
 	};
 
 	message.customEmbed = (config, files = []) => {
-		let embed = utils.defaultEmbed(message, bot)
+		let embed = defaultEmbed(message, bot)
 			.attachFiles(files);
 
 		let newEmbed = config(embed);
@@ -55,7 +55,7 @@ const setupMessage = (messageInfo) => {
 	};
 
 	message.returnCustomEmbed = (config, files = []) => {
-		let embed = utils.defaultEmbed(message, bot)
+		let embed = defaultEmbed(message, bot)
 			.attachFiles(files);
 
 		let newEmbed = config(embed);

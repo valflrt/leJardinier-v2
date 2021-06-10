@@ -45,7 +45,7 @@ bot.on("message", async message => {
 
 	// setup
 
-	let messageInfo = { message, bot }; // default required info to pass to functions
+	let messageInfo = { message, bot }; // default needed info to pass to functions
 	utils.setupMessage(messageInfo); // setup message (adding methods)
 
 	// listeners
