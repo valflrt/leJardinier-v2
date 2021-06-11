@@ -3,6 +3,8 @@ const fetch = require("node-fetch");
 const config = require("./config.json");
 const utils = require("./utils");
 let { addSong, startMusic, stopMusic, skipSong } = require("./music");
+const { set } = require("mongoose");
+const { Emoji } = require("discord.js");
 
 const commands = new Map();
 
@@ -23,25 +25,49 @@ new Command("help", {
 	execute: args => {
 		let { message, bot } = args;
 
-		let embed = utils.defaultEmbed(message, bot);
-
-		let commandArray = new Array();
-		commands.forEach((command) => {
-			if (command.hidden === true) return;
-			commandArray.push(command);
-			embed.addField(`${command.syntax}`, `${command.description}`);
-		});
-
-		let formattedArray = new Array();
-
-		let i = 0;
-		let length = Math.round(commandArray.length / 5);
-
-		for (i = 0; i <= length; i++) {
-
+		function cutArray(array) {
+			let newArray = new Array();
+			do {
+				let items = array.splice(0, 5);
+				newArray.push(items);
+			} while (array.length >= 5);
+			if (array.length !== 0) newArray.push(array);
+			return newArray;
 		};
 
-		message.reply(embed);
+		let commandArray = new Array();
+		commands.forEach((command) => commandArray.push(command));
+
+		let formatted = cutArray(commandArray);
+		let index = 0;
+
+		let loadPage = embed => {
+			formatted[index].forEach((command) => {
+				if (command.hidden === true) return;
+				commandArray.push(command);
+				embed.addField(`${command.syntax}`, `${command.description}`);
+			});
+			return embed;
+		};
+
+		message.customEmbed(loadPage)
+			.then(async (sent) => {
+				await sent.react("⬅️");
+				await sent.react("➡️");
+				let collector = sent.createReactionCollector((reaction) => reaction.emoji.name === "⬅️" || reaction.emoji.name === "➡️", { max: 50, time: 60000, errors: ["time"] });
+				collector.on("collect", reaction => {
+					if (reaction.emoji.name === "➡️" && index !== formatted.length) {
+						index++;
+						sent.edit(message.returnCustomEmbed(loadPage));
+						reaction.remove()
+					} else if (reaction.emoji.name === "⬅️" && index !== 0) {
+						index--;
+						sent.edit(message.returnCustomEmbed(loadPage));
+						reaction.remove()
+					};
+				});
+				collector.on("end", () => sent.edit(message.returnEmbed(`Delai maximum d'affichage dépassé (1min)`)));
+			});
 	}
 });
 
