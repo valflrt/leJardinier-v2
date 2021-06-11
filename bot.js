@@ -53,6 +53,8 @@ bot.on("message", async message => {
 	reader.listen(messageInfo); // simple fontion reading messages and replying in particular cases
 	commands.listen(messageInfo); // listen to command calls
 
+	return;
+
 });
 
 bot.login(token);
