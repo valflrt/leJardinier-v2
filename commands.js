@@ -114,7 +114,26 @@ new Command("taux", {
 	syntax: `taux <?phrase>`,
 	execute: args => {
 		let { message, content, bot } = args;
-		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage()}%`);
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage(true)}%`);
+	}
+});
+
+new Command("vrai ou faux", {
+	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
+	syntax: `vrai ou faux <?phrase>`,
+	execute: args => {
+		let { message, content, bot } = args;
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
+	}
+});
+
+new Command("lovemeter", {
+	description: "Determine la puissance de l'amour entre vous et quelqu'un d'autre (aléatoirement)",
+	syntax: `lovemeter <personne>`,
+	execute: args => {
+		let { message, content } = args;
+		if (message.mentions.users.size === 0 && !content) return message.embed(`Tu dois ajouter la personne avec qui tu veux tester ton amour...`);
+		message.embed(`${message.author} x ${!content ? message.mentions.users.first() : content}: ${utils.randomPercentage(true)}%`);
 	}
 });
 
@@ -325,3 +344,5 @@ module.exports.listen = (messageInfo) => {
 	};
 
 };
+
+module.exports.list = commands;
