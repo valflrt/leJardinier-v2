@@ -6,15 +6,15 @@ module.exports.listen = messageInfo => {
 	let { message } = messageInfo,
 		{ content } = message;
 
-	if (content.match(/[Nn][Oo]+[Nn]((\s)?[\.\!\?]+)?$/g) !== null) {
+	if (content.match(/(^|\s)[Nn][Oo]+[Nn]((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple("*bril*");
 	};
 
-	if (content.match(/[Qq][Uu][Oo][Ii]((\s)?[\.\!\?]+)?$/g) !== null) {
+	if (content.match(/(^|\s)[Qq][Uu][Oo][Ii]((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple("*feur*");
 	};
 
-	if (content.match(/[Oo][Uu][Ii]+((\s)?[\.\!\?]+)?$/g) !== null) {
+	if (content.match(/(^|\s)[Oo][Uu][Ii]+((\s)?[\.\!\?]+)?$/g) !== null) {
 		message.simple(utils.randomItem("*stiti*", "*fi*"));
 	};
 
