@@ -23,7 +23,7 @@ new Command("help", {
 	description: "Donne une liste de toutes les commandes disponibles",
 	syntax: `help`,
 	execute: args => {
-		let { message, bot } = args;
+		let { message } = args;
 
 		function cutArray(array) {
 			let newArray = new Array();
@@ -41,10 +41,10 @@ new Command("help", {
 		let formatted = cutArray(commandArray);
 		let index = 0;
 
-		let loadPage = embed => {
+		let loadPage = (embed) => {
+			embed.addField(`Page: `, `${index + 1}/${formatted.length}`, true);
 			formatted[index].forEach((command) => {
 				if (command.hidden === true) return;
-				commandArray.push(command);
 				embed.addField(`${command.syntax}`, `${command.description}`);
 			});
 			return embed;
@@ -54,20 +54,30 @@ new Command("help", {
 			.then(async (sent) => {
 				await sent.react("⬅️");
 				await sent.react("➡️");
-				let collector = sent.createReactionCollector((reaction) => reaction.emoji.name === "⬅️" || reaction.emoji.name === "➡️", { max: 50, time: 60000, errors: ["time"] });
-				collector.on("collect", reaction => {
-					if (reaction.emoji.name === "➡️" && index !== formatted.length) {
+				await sent.react("❌");
+				let collector = sent.createReactionCollector((reaction) => ["⬅️", "➡️", "❌"].includes(reaction.emoji.name), { max: 200, time: 60000, errors: ["time"] });
+				collector.on("collect", async (reaction, user) => {
+					if (reaction.emoji.name === "➡️" && index + 1 !== formatted.length) {
 						index++;
-						sent.edit(message.returnCustomEmbed(loadPage));
-						reaction.remove()
+						await reaction.users.remove(user);
+						await sent.edit(message.returnCustomEmbed(loadPage));
 					} else if (reaction.emoji.name === "⬅️" && index !== 0) {
 						index--;
-						sent.edit(message.returnCustomEmbed(loadPage));
-						reaction.remove()
+						await reaction.users.remove(user);
+						await sent.edit(message.returnCustomEmbed(loadPage));
+					} else if (reaction.emoji.name === "❌") {
+						return collector.stop("L'affichage a été fermé");
+					} else {
+						await reaction.users.remove(user);
 					};
 				});
-				collector.on("end", () => sent.edit(message.returnEmbed(`Delai maximum d'affichage dépassé (1min)`)));
-			});
+				collector.on("end", async (collected, reason) => {
+					console.log(reason);
+					if (reason === "time") await sent.edit(message.returnEmbed(`Delai maximum d'affichage dépassé (1min)`));
+					else await sent.edit(message.returnEmbed(reason));
+					await sent.reactions.removeAll();
+				});
+			}).catch(err => console.log(err));
 	}
 });
 
