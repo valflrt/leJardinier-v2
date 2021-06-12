@@ -88,6 +88,18 @@ new Command("hey", {
 	}
 });
 
+new Command("epeler", {
+	description: "Dire bonjour au bot",
+	syntax: `epeler <mot/phrase>`,
+	execute: async args => {
+		let { message, content } = args;
+		let length = content.length;
+		for (let i = 0; i < length; i++) {
+			await message.simple(content.charAt(i));
+		};
+	}
+});
+
 new Command("vrai ou faux", {
 	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
 	syntax: `vrai ou faux <?phrase>`,
