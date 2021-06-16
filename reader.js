@@ -65,7 +65,11 @@ module.exports.static = (bot) => {
 		let minutes = new Date().getMinutes();
 		if (hours == minutes) {
 			if (lastNoseTouch === `${hours}:${minutes}`) return;
-			bot.channels.cache.get("802634814771560518").send(`Eh les <@&802634842557644900> vous savez ce que vous avez à faire ${utils.randomItem(":3", ":>")}`);
+			bot.channels.cache.get("802634814771560518").send(`${utils.randomItem(
+				`Eh les <@&802634842557644900> vous savez ce que vous avez à faire`,
+				`Chers <@&802634842557644900> ceci est notre heure`,
+				`L'instant ultime est arrivé <@&802634842557644900>`
+			)} ${utils.randomItem(":3", ":>", ":)", "!")}`);
 			lastNoseTouch = `${hours}:${minutes}`;
 		};
 	}, 5000);

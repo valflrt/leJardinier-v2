@@ -39,7 +39,7 @@ bot.on("message", async message => {
 
 	console.log(`${message.author.username.cyan}${message.content !== "" ? `:` : ""} ${(message.content.includes(config.prefix) === true)
 		? message.content.yellow
-		: message.content} ${message.embeds.length !== 0 ? `[${message.embeds.length} embeds]`.green : ""} ${message.attachments.size !== 0 ? `[${message.attachments.size} attachements]`.green : ""}`); // logs every message
+		: message.content} ${message.embeds.length !== 0 ? `[${message.embeds.length} embeds]`.green : ""}${message.attachments.size !== 0 ? ` [${message.attachments.size} attachements]`.green : ""}`); // logs every message
 
 	if (message.author.bot) return; // skip if the author of the message is a bot
 
