@@ -57,4 +57,9 @@ bot.on("message", async message => {
 
 });
 
+bot.on("messageUpdate", (message) => {
+	if (message.author.bot) return;
+	reader.listen(messageInfo);
+});
+
 bot.login(token);
