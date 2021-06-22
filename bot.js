@@ -6,7 +6,7 @@ import { static, listen as _listen } from "./reader";
 import { setupMessage } from "./utils";
 
 import { username, activity as _activity, activityType, prefix } from "./config";
-import token from "./token.json";
+import token from "./token";
 
 const bot = new Client();
 
