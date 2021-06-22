@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 const config = require("./config/config.json");
 const utils = require("./utils");
-let { addSong, startMusic, stopMusic, skipSong } = require("../music");
+let { addSong, startMusic, stopMusic, skipSong } = require("./music");
 
 const commands = new Map();
 
