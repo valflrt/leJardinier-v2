@@ -2,8 +2,8 @@
   "name": "lejardinier-v2",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js",
-    "dev": "nodemon bot.js"
+    "start": "node ./src/bot.js",
+    "dev": "nodemon ./src/bot.js"
   },
   "author": "valflrt",
   "license": "ISC",
