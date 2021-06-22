@@ -1,5 +1,4 @@
 const discord = require("discord.js");
-const { execSync } = require("child_process");
 require("colors");
 
 const commands = require("./commands");
@@ -8,10 +7,6 @@ const utils = require("./utils");
 
 const config = require("./config.json");
 const token = require("./token.json");
-
-try {
-	execSync("sh ./update.sh", (err) => err && console.log(err)); // update files from github
-} catch (e) { };
 
 const bot = new discord.Client();
 
