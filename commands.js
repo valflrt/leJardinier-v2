@@ -1,8 +1,8 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
-import { prefix } from "./config.js";
-import { randomItem, randomPercentage } from "./utils";
-import { addSong, startMusic, stopMusic, skipSong } from "./music";
+const config = require("./config.json");
+const utils = require("./utils");
+let { addSong, startMusic, stopMusic, skipSong } = require("./music");
 
 const commands = new Map();
 
@@ -10,7 +10,7 @@ class Command {
 	constructor(name, command) {
 		this.name = name;
 		this.description = command.description;
-		this.syntax = `${prefix}${command.syntax}`;
+		this.syntax = `${config.prefix}${command.syntax}`;
 		this.execute = command.execute || (() => { });
 		this.hidden = command.hidden || false;
 		commands.set(name, this);
@@ -84,7 +84,7 @@ new Command("hey", {
 	syntax: `hey`,
 	execute: args => {
 		let { message } = args;
-		message.embed(`${randomItem("hey", "Hii", "Yo")} ${message.author} ${randomItem(":3", ":)", "!")}`);
+		message.embed(`${utils.randomItem("hey", "Hii", "Yo")} ${message.author} ${utils.randomItem(":3", ":)", "!")}`);
 	}
 });
 
@@ -105,7 +105,7 @@ new Command("true or false", {
 	syntax: `true or false <?sentence>`,
 	execute: args => {
 		let { message, content, bot } = args;
-		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${randomItem("vrai !", "faux !")}`)
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
 	}
 });
 
@@ -114,7 +114,7 @@ new Command("rate", {
 	syntax: `rate <?sentence>`,
 	execute: args => {
 		let { message, content, bot } = args;
-		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${randomPercentage(true)}%`);
+		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage(true)}%`);
 	}
 });
 
@@ -124,7 +124,7 @@ new Command("lovemeter", {
 	execute: args => {
 		let { message, content } = args;
 		if (message.mentions.users.size === 0 && !content) return message.embed(`Tu dois ajouter la personne avec qui tu veux tester ton amour...`);
-		message.embed(`${message.author} x ${!content ? message.mentions.users.first() : content}: ${randomPercentage(true)}%`);
+		message.embed(`${message.author} x ${!content ? message.mentions.users.first() : content}: ${utils.randomPercentage(true)}%`);
 	}
 });
 
@@ -200,7 +200,7 @@ new Command("code", {
 	execute: args => {
 		let { message } = args;
 		message.customEmbed(embed => {
-			embed.setDescription(`Voici le lien pour voir le code qui me fait fonctionner ${randomItem(":3", ":)", "!")}`);
+			embed.setDescription(`Voici le lien pour voir le code qui me fait fonctionner ${utils.randomItem(":3", ":)", "!")}`);
 			embed.setTitle("voir le code");
 			embed.setURL(require("./package.json").repository.url);
 			return embed;
@@ -317,23 +317,23 @@ new Command("detectreaction", {
 
 */
 
-export function listen(messageInfo) {
+module.exports.listen = (messageInfo) => {
 	let { message, bot } = messageInfo,
 		content = message.content;
 
 	let commandName;
 	commands.forEach((value, key) => {
-		if (content.match(new RegExp(`^${prefix}${key}`, "g"))) commandName = key;
+		if (content.match(new RegExp(`^${config.prefix}${key}`, "g"))) commandName = key;
 	});
 
-	if (content.match(new RegExp(`^${prefix}`, "g"))) {
+	if (content.match(new RegExp(`^${config.prefix}`, "g"))) {
 		if (commandName && commands.has(commandName)) commands.get(commandName).execute({
 			message,
-			content: message.content.replace(new RegExp(`^${prefix}${commandName}`, "g"), "").trim(),
+			content: message.content.replace(new RegExp(`^${config.prefix}${commandName}`, "g"), "").trim(),
 			bot
 		}); else message.react("❔");
 	};
 
-}
+};
 
-export const list = commands;
+module.exports.list = commands;
