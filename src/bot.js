@@ -5,8 +5,8 @@ const commands = require("./commands");
 const reader = require("./reader");
 const utils = require("./utils");
 
-const config = require("./config.json");
-const token = require("./token.json");
+const config = require("./config/config.json");
+const token = require("./config/token.json");
 
 const bot = new discord.Client();
 

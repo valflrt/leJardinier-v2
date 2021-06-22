@@ -1,5 +1,5 @@
 const utils = require("./utils");
-const config = require("./config.json")
+const config = require("./config/config.json")
 
 module.exports.listen = messageInfo => {
 

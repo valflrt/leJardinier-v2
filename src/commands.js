@@ -1,8 +1,8 @@
 const fetch = require("node-fetch");
 
-const config = require("./config.json");
+const config = require("./config/config.json");
 const utils = require("./utils");
-let { addSong, startMusic, stopMusic, skipSong } = require("./music");
+let { addSong, startMusic, stopMusic, skipSong } = require("../music");
 
 const commands = new Map();
 
@@ -202,7 +202,7 @@ new Command("code", {
 		message.customEmbed(embed => {
 			embed.setDescription(`Voici le lien pour voir le code qui me fait fonctionner ${utils.randomItem(":3", ":)", "!")}`);
 			embed.setTitle("voir le code");
-			embed.setURL(require("./package.json").repository.url);
+			embed.setURL(require("../package.json").repository.url);
 			return embed;
 		});
 	}
