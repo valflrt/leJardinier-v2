@@ -1,4 +1,5 @@
 const discord = require("discord.js");
+const { execSync } = require("child_process");
 require("colors");
 
 const commands = require("./commands");
@@ -7,6 +8,12 @@ const utils = require("./utils");
 
 const config = require("./config.json");
 const token = require("./token.json");
+
+try {
+	execSync("sh ./update.sh", (err) => err && console.log(err)); // update files from github
+} catch (e) {
+	console.log(e);
+};
 
 const bot = new discord.Client();
 
@@ -45,8 +52,8 @@ bot.on("message", async message => {
 
 	// setup
 
-	const messageInfo = { message, bot }; // default needed info to pass to functions
-	utils.setupMessage(messageInfo); // setup message (adding methods)
+	// messageInfo contains the required information to run all the commands
+	const messageInfo = utils.setupMessage(messageInfo); // setup message (adding methods) and creating messageInfo ({message, bot})
 
 	// listeners
 
@@ -55,11 +62,6 @@ bot.on("message", async message => {
 
 	return;
 
-});
-
-bot.on("messageUpdate", (message) => {
-	if (message.author.bot) return;
-	reader.listen(messageInfo);
 });
 
 bot.login(token);
