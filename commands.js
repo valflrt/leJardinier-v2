@@ -18,7 +18,7 @@ class Command {
 };
 
 new Command("help", {
-	description: "Donne une liste de toutes les commandes disponibles",
+	description: "Gives a list of all the available commands",
 	syntax: `help`,
 	execute: args => {
 		let { message } = args;
@@ -80,17 +80,17 @@ new Command("help", {
 });
 
 new Command("hey", {
-	description: "Dire bonjour au bot",
+	description: "Greet the bot",
 	syntax: `hey`,
 	execute: args => {
 		let { message } = args;
-		message.embed(`${utils.randomItem("hey", "Salut", "Yo")} ${message.author} ${utils.randomItem(":3", ":)", "!")}`);
+		message.embed(`${utils.randomItem("hey", "Hii", "Yo")} ${message.author} ${utils.randomItem(":3", ":)", "!")}`);
 	}
 });
 
-new Command("epeler", {
-	description: "Dire bonjour au bot",
-	syntax: `epeler <mot/phrase>`,
+new Command("spell", {
+	description: "The bot spells a sentence or a word",
+	syntax: `spell <word/sentence>`,
 	execute: async args => {
 		let { message, content } = args;
 		let length = content.length;
@@ -100,36 +100,27 @@ new Command("epeler", {
 	}
 });
 
-new Command("vrai ou faux", {
-	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
-	syntax: `vrai ou faux <?phrase>`,
+new Command("true or false", {
+	description: "Answer \"true\" or \"false\" randomly",
+	syntax: `true or false <?sentence>`,
 	execute: args => {
 		let { message, content, bot } = args;
 		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
 	}
 });
 
-new Command("taux", {
-	description: "Donne un taux aléatoire de quelque chose",
-	syntax: `taux <?phrase>`,
+new Command("rate", {
+	description: "The bot gives a random rate (%)",
+	syntax: `rate <?sentence>`,
 	execute: args => {
 		let { message, content, bot } = args;
 		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomPercentage(true)}%`);
 	}
 });
 
-new Command("vrai ou faux", {
-	description: "Réponds \"vrai\" ou \"faux\" aléatoirement",
-	syntax: `vrai ou faux <?phrase>`,
-	execute: args => {
-		let { message, content, bot } = args;
-		message.embed(`${content && `${message.author}\n${content}\n${bot.user}\n`}${utils.randomItem("vrai !", "faux !")}`)
-	}
-});
-
 new Command("lovemeter", {
-	description: "Determine la puissance de l'amour entre vous et quelqu'un d'autre (aléatoirement)",
-	syntax: `lovemeter <personne>`,
+	description: "Finds the love rate between you and someone else",
+	syntax: `lovemeter <person>`,
 	execute: args => {
 		let { message, content } = args;
 		if (message.mentions.users.size === 0 && !content) return message.embed(`Tu dois ajouter la personne avec qui tu veux tester ton amour...`);
@@ -138,8 +129,8 @@ new Command("lovemeter", {
 });
 
 new Command("choose", {
-	description: "Choisi une personne aléatoire dans le serveur",
-	syntax: `choose <?phrase>`,
+	description: "Chooses someone randomly in the server",
+	syntax: `choose <?sentence>`,
 	execute: args => {
 		let { message, content, bot } = args;
 		message.guild.members.fetch()

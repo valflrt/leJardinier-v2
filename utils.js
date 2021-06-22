@@ -66,6 +66,8 @@ const setupMessage = (messageInfo) => {
 	message.simple = text => {
 		message.channel.send(text);
 	};
+
+	return messageInfo;
 }
 
 module.exports = { randomItem, randomNumber, randomPercentage, defaultEmbed, setupMessage };

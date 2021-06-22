@@ -11,9 +11,7 @@ const token = require("./token.json");
 
 try {
 	execSync("sh ./update.sh", (err) => err && console.log(err)); // update files from github
-} catch (e) {
-	console.log(e);
-};
+} catch (e) { };
 
 const bot = new discord.Client();
 
@@ -53,7 +51,7 @@ bot.on("message", async message => {
 	// setup
 
 	// messageInfo contains the required information to run all the commands
-	const messageInfo = utils.setupMessage(messageInfo); // setup message (adding methods) and creating messageInfo ({message, bot})
+	const messageInfo = utils.setupMessage({ message, bot }); // setup message (adding methods) and creating messageInfo ({message, bot})
 
 	// listeners
 
