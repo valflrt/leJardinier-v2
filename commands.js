@@ -144,15 +144,14 @@ new Command("hug", {
 	description: "Hug somebody",
 	syntax: `hug <?mention>`,
 	execute: args => {
-		let { message } = args;
+		let { message, bot } = args;
 		let mentions = message.mentions.users.array();
 		if (mentions.length === 0) mentions = [message.author];
 		fetch("https://nekos.life/api/hug")
 			.then(res => res.json())
 			.then(data => {
-				console.log(data);
 				message.customEmbed(embed => embed
-					.setDescription(`${message.author} hugs ${mentions.length === 1 ? "herself/himself" : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
+					.setDescription(`${message.author} hugs ${mentions.length === 1 ? bot.user : `${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`}`)
 					.setImage(data.url)
 				);
 			});
@@ -160,9 +159,9 @@ new Command("hug", {
 	}
 });
 
-new Command("pdp", {
-	description: "Obtenir la photo de profil d'un membre du serveur",
-	syntax: `pdp <?mention>`,
+new Command("pp", {
+	description: "Get somebody's profile picture",
+	syntax: `pp <?mention>`,
 	execute: args => {
 		let { message } = args;
 		let mentions = message.mentions.users.array();
@@ -172,31 +171,31 @@ new Command("pdp", {
 });
 
 new Command("music add", {
-	description: "Ajouter une musique à la playlist",
-	syntax: `music add <url youtube>`,
+	description: "Add a song to the playlist",
+	syntax: `music add <youtube url>`,
 	execute: args => addSong(args)
 });
 
 new Command("music play", {
-	description: "Jouer la playlist",
+	description: "Start playing music",
 	syntax: `music play`,
 	execute: args => startMusic(args)
 });
 
 new Command("music stop", {
-	description: "Arreter la musique",
+	description: "Stop playing music",
 	syntax: `music stop`,
 	execute: args => stopMusic(args)
 });
 
 new Command("music skip", {
-	description: "Passer cette musique",
+	description: "Skip current song",
 	syntax: `music skip`,
 	execute: args => skipSong(args)
 });
 
 new Command("code", {
-	description: "Voire le code du bot (github)",
+	description: "Get a link to the bot's code (github)",
 	syntax: `code`,
 	execute: args => {
 		let { message } = args;
@@ -210,7 +209,7 @@ new Command("code", {
 });
 
 new Command("invite", {
-	description: "Génére un lien pour inviter le bot dans un de vos serveur",
+	description: "Generate invite link",
 	syntax: `invite`,
 	execute: args => {
 		let { message, bot } = args;
@@ -225,9 +224,11 @@ new Command("invite", {
 	}
 });
 
+/*
+
 new Command("emote send", {
-	description: `Le bot envoie une emote à l'aide un id d'emote`,
-	syntax: `emote send <id d'emote>`,
+	description: `Sends an emote from an emote id (devlopper feature)`,
+	syntax: `emote send <emote id>`,
 	execute: async (args) => {
 		let { message, content, bot } = args;
 
@@ -241,8 +242,8 @@ new Command("emote send", {
 });
 
 new Command("emote react", {
-	description: `Fait réagir le bot avec un id d'emote et un id de message`,
-	syntax: `emote react <id de message> <id d'emote>`,
+	description: `The bot reacts to a message with an emote (using discord ids)`,
+	syntax: `emote react <message id> <emote id>`,
 	execute: (args) => {
 		let { message, content } = args;
 
@@ -272,7 +273,6 @@ new Command("emote spam", {
 	}
 });
 
-/*
 
 new Command("testmodify", {
 	description: "la flemme vous connaissez ?",
