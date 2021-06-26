@@ -7,22 +7,26 @@ module.exports.listen = messageInfo => {
 		{ content } = message;
 
 	if (content.match(/(^|\s)[Nn][Oo]+[Nn]((\s)?[\.\!\?]+)?$/g) !== null) {
-		message.simple("*bril*");
+		utils.actionRate(1, 100) // 1 of 100 rate to occur
+			.action(() => message.simple("*bril*"));
+
 	};
 
 	if (content.match(/(^|\s)[Qq][Uu][Oo][Ii]((\s)?[\.\!\?]+)?$/g) !== null) {
-		message.simple("*feur*");
+		utils.actionRate(1, 100)
+			.action(() => message.simple("*feur*"));
 	};
 
 	if (content.match(/(^|\s)[Oo][Uu][Ii]+((\s)?[\.\!\?]+)?$/g) !== null) {
-		message.simple(utils.randomItem("*stiti*", "*fi*"));
+		utils.actionRate(1, 100)
+			.action(() => message.simple(utils.randomItem("*stiti*", "*fi*")));
 	};
 
 	if (content.match(/^[oO][kK]$/g) !== null) {
 		message.react("🤬");
 	};
 
-	if (content.match(/^[Pp][Uu][Tt][Ee]$/g) !== null && message.reference !== null && message.mentions.users.get("710524468782694520") !== undefined) {
+	if (content.match(/(^[Pp][Uu][Tt][Ee]$)|(^[Tt][Aa]\s[Mm][EeÈè][Rr][Ee]$)/g) !== null && message.reference !== null && message.mentions.users.get("710524468782694520") !== undefined) {
 		message.simple(`ok ${message.author} mais paye moi au moins alors`);
 	};
 

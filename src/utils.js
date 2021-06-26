@@ -12,6 +12,17 @@ const randomPercentage = (bonus = false) => {
 	return !bonusValue ? (Math.floor(Math.random() * 100)) : 100 + bonusValue;
 };
 
+const actionRate = (times, total) => {
+
+	let rate = times / total * 100; // action rate (as percentage)
+	let random = Math.floor(Math.random() * 100);
+
+	console.log(rate, random, random === rate);
+
+	if (random === rate) return { action: (fn) => fn() };
+	else return { action: () => { } };
+};
+
 const defaultEmbed = (message, bot) => new discord.MessageEmbed()
 	.setColor("#49a013")
 	.setFooter(`En reponse à ${message.author.tag}`)
@@ -70,4 +81,4 @@ const setupMessage = (messageInfo) => {
 	return messageInfo;
 }
 
-module.exports = { randomItem, randomNumber, randomPercentage, defaultEmbed, setupMessage };
+module.exports = { randomItem, randomNumber, randomPercentage, actionRate, defaultEmbed, setupMessage };
