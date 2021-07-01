@@ -1,5 +1,3 @@
-const discord = require("discord.js");
-
 const randomItem = (...array) => array[Math.floor(Math.random() * array.length)];
 
 const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
