@@ -3,7 +3,7 @@ require("colors");
 
 const commands = require("./commands");
 const reader = require("./reader");
-const utils = require("./utils");
+const MessageInfo = require("./message");
 
 const config = require("./config/config.json");
 const token = require("./config/token.json");
@@ -45,15 +45,13 @@ bot.on("message", async message => {
 
 	// setup
 
-	// messageInfo contains the required information to run all the commands
-	const messageInfo = utils.setupMessage({ message, bot }); // setup message (adding methods) and creating messageInfo ({message, bot})
-
-	// listeners
+	const messageInfo = new MessageInfo({ message, bot }); // create a message instance object (see more in ./message.js)
 
 	reader.listen(messageInfo); // simple fontion reading messages and replying in particular cases
-	commands.listen(messageInfo); // listen to command calls
 
-	return;
+	// execute command
+
+	if (messageInfo.command) messageInfo.command.execute(messageInfo);
 
 });
 
