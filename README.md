@@ -6,7 +6,7 @@
 
 ## Configuration
 
-[config.json](./config.json):
+[config.json](src/config/config.json):
 
 set username:
 ```json
