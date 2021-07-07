@@ -49,7 +49,7 @@ token.json (i made it secret because it enables people to control the bot):
 "put your token here"
 ```
 
-## Starting the bot
+## Simple start
 
 Simple start:
 `npm start`
