@@ -1,3 +1,3 @@
 sudo service leJardinier stop
-git fetch
+git pull
 sudo service leJardinier start
