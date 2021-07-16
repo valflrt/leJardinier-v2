@@ -67,18 +67,18 @@ guilds = new Map();
 const addSong = async (args) => {
 	let { message, content } = args;
 	let song = new Song();
-	message.embed(`Recherche de la musique...`)
+	message.embed(`Looking for the song...`)
 		.then(sent => song.setVideoDetails(content)
 			.then(() => {
 				if (!guilds.has(message.guild.id)) guilds.set(message.guild.id, new GuildQueue(args));
 				guilds.get(message.guild.id).addSong(song);
 				sent.edit(message.returnCustomEmbed(embed => embed
-					.setDescription(`Musique ajoutée à la playlist avec succès ${utils.randomItem(":3", ":)", "!")}`)
+					.setDescription(`Song found and added to the playlist successfully ${utils.randomItem(":3", ":)", "!")}`)
 					.setImage(song.videoDetails.thumbnails.url)
 					.setTitle(song.title)
 					.setURL(song.url))
 				);
-			}).catch(() => sent.edit(message.returnEmbed(`Cette vidéo n'existe pas ou est indisponible`)))
+			}).catch(() => sent.edit(message.returnEmbed(`Unable to find the requested song`)))
 		);
 };
 
@@ -88,26 +88,26 @@ const startMusic = async (args) => {
 	let currentGuild = guilds.get(message.guild.id);
 
 	let voiceChannel = message.member.voice.channel;
-	if (!voiceChannel) return message.embed(`Tu dois être dans un salon vocal pour pouvoir entendre la musique...`);
+	if (!voiceChannel) return message.embed(`You need to be in a audio channel to hear the song...`);
 	let permissions = voiceChannel.permissionsFor(bot.user);
-	if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) return message.embed(`Je n'ai pas la permission de rejoindre ce salon...`)
+	if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) return message.embed(`I am not allowed to join ${voiceChannel}...`)
 
-	if (!currentGuild || currentGuild.queue.length === 0) return message.embed(`La playlist est vide...`);
+	if (!currentGuild || currentGuild.queue.length === 0) return message.embed(`The playlist is empty...`);
 
 	currentGuild.setVoiceChannel(voiceChannel);
 	message.embed(`Salon textuel relié`)
-		.then(sent => setTimeout(() => sent.edit(message.returnEmbed(`Connection au salon vocal en cours...`))
+		.then(sent => setTimeout(() => sent.edit(message.returnEmbed(`Connecting to ${voiceChannel}...`))
 			.then(sent => {
 				setTimeout(() => {
 					voiceChannel.join()
 						.then(voice => {
-							sent.edit(message.returnEmbed(`Connecté au salon vocal avec succès ${utils.randomItem(":3", ":)", "!")}`));
+							sent.edit(message.returnEmbed(`Connected to ${voiceChannel} ${utils.randomItem(":3", ":)", "!")}`));
 							guilds.get(message.guild.id).setVoiceDispatcher(voice);
 							play(args);
 						})
 						.catch(err => {
 							console.log(err);
-							sent.edit(message.returnEmbed(`Erreur lors de la connection au salon vocal...`));
+							sent.edit(message.returnEmbed(`Failed to connect to ${voiceChannel}...`));
 
 						})
 				}, 1000)
@@ -121,14 +121,14 @@ const play = (args) => {
 	if (currentGuild.queue.length === 0) {
 		currentGuild.voiceDispatcher.disconnect();
 		currentGuild.voiceChannel.leave();
-		return message.embed(`La playlist est vide...`);
+		return message.embed(`The playlist is empty...`);
 	};
 	currentGuild.next()
 		.play(currentGuild, args)
 		.then(() => play(args))
 		.catch(err => {
 			console.log(err);
-			message.embed(`J'ai rencontré une erreur inconnue...`);
+			message.embed(`I encountered an unknown error...`);
 			currentGuild.voiceChannel.leave();
 		});
 };
@@ -139,8 +139,8 @@ const stopMusic = async (args) => {
 		let currentGuild = guilds.get(message.guild.id);
 		await currentGuild.voiceDispatcher.disconnect();
 		await currentGuild.voiceChannel.leave();
-		message.embed(`Musique stoppée avec succès`);
-	} else message.embed(`Tu dois d'abord démarrer la musique pour la stopper !`);
+		message.embed(`Song stopped successfully`);
+	} else message.embed(`You need to start the song before to stop it !`);
 };
 
 const skipSong = async (args) => {
@@ -148,7 +148,7 @@ const skipSong = async (args) => {
 	if (guilds.has(message.guild.id) && guilds.get(message.guild.id).voiceDispatcher) {
 		guilds.get(message.guild.id).queue.shift();
 		play(args);
-	} else message.embed(`Tu dois d'abord démarrer la musique pour la passer !`);
+	} else message.embed(`You need to start the song before to skip it !`);
 };
 
 module.exports = { addSong, startMusic, stopMusic, skipSong };

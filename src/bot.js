@@ -1,7 +1,6 @@
 const discord = require("discord.js");
 require("colors");
 
-const commands = require("./commands");
 const reader = require("./reader");
 const MessageInfo = require("./message");
 
