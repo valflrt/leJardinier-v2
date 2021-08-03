@@ -43,7 +43,7 @@ full exemple:
 }
 ```
 
-token.json (i made it secret because it enables people to control the bot):
+token.json (you need to create the file yourself):
 
 ```json
 "put your token here"
