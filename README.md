@@ -4,51 +4,6 @@
 
 `npm install`
 
-## Configuration
-
-[config.json](src/config/config.json):
-
-set username:
-```json
-"username": "le Jardinier"
-```
-
-set an activity list to be displayed (switch between each item every 5 seconds):
-```json
-"activity": {
-	"list": [
-		"lj!help", 
-		"réalisé par Synonym'#8436 (valflrt sur github)"
-	]
-}
-```
-
-set the prefix:
-```json
-"prefix": "lj!"
-```
-
-full exemple:
-```json
-{
-	"username": "le Jardinier",
-	"activity": {
-		"list": [
-			"lj!help",
-			"réalisé par Synonym'#8436 (valflrt sur github)"
-		],
-		"status": "idle"
-	},
-	"prefix": "lj!"
-}
-```
-
-token.json (you need to create the file yourself):
-
-```json
-"put your token here"
-```
-
 ## Simple start
 
 Simple start:
@@ -56,3 +11,5 @@ Simple start:
 
 Development start:
 `npm run dev`
+
+*Caution: my code is extremely fucked up so don't pay too much attention*
