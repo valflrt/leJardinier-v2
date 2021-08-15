@@ -12,4 +12,6 @@ Simple start:
 Development start:
 `npm run dev`
 
+# Notes
+
 *Caution: my code is extremely fucked up so don't pay too much attention*
