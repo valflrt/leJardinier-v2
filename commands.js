@@ -64,14 +64,14 @@ new Command("help", {
 						await reaction.users.remove(user);
 						await sent.edit(message.returnCustomEmbed(loadPage));
 					} else if (reaction.emoji.name === "❌") {
-						return collector.stop("L'affichage a été fermé");
+						return collector.stop("Closed display");
 					} else {
 						await reaction.users.remove(user);
 					};
 				});
 				collector.on("end", async (collected, reason) => {
 					console.log(reason);
-					if (reason === "time") await sent.edit(message.returnEmbed(`Delai maximum d'affichage dépassé (1min)`));
+					if (reason === "time") await sent.edit(message.returnEmbed(`Display timeout (1min)`));
 					else await sent.edit(message.returnEmbed(reason));
 					await sent.reactions.removeAll();
 				});
@@ -123,7 +123,7 @@ new Command("lovemeter", {
 	syntax: `lovemeter <person>`,
 	execute: messageInfo => {
 		let { message, commandAttr } = messageInfo;
-		if (message.mentions.users.size === 0 && !commandAttr.content) return message.embed(`Tu dois ajouter la personne avec qui tu veux tester ton amour...`);
+		if (message.mentions.users.size === 0 && !commandAttr.content) return message.embed(`You have to mention the person you want to test your love with...`);
 		message.embed(`${message.author} x ${!commandAttr.content ? message.mentions.users.first() : commandAttr.content}: ${utils.randomPercentage(true)}%`);
 	}
 });
@@ -135,7 +135,7 @@ new Command("choose", {
 		let { message, commandAttr, bot } = messageInfo;
 		message.guild.members.fetch()
 			.then(members => {
-				message.embed(`${commandAttr.content && `${message.author}\n${commandAttr.content}\n${bot.user}\nLa personne choisie est ${members.random()}`}`);
+				message.embed(`${commandAttr.content && `${message.author}\n${commandAttr.content}\n${bot.user}\nThe chosen person is ${members.random()}`}`);
 			});
 	}
 });
@@ -166,7 +166,7 @@ new Command("pp", {
 		let { message } = messageInfo;
 		let mentions = message.mentions.users.array();
 		if (mentions.length === 0) mentions = [message.author];
-		message.embed(`Voici ${(mentions.length === 1) ? "la photo de profil" : "les photos de profil"} de ${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")}`, mentions.map(user => user.displayAvatarURL()));
+		message.embed(`Here ${(mentions.length === 1) ? "is" : "are"} ${mentions.map((user, i) => (i === 0) ? `${user}` : `, ${user}`).join("")} profile ${(mentions.length === 1) ? "picture" : "pictures"}`, mentions.map(user => user.displayAvatarURL()));
 	}
 });
 
@@ -200,8 +200,8 @@ new Command("code", {
 	execute: messageInfo => {
 		let { message } = messageInfo;
 		message.customEmbed(embed => {
-			embed.setDescription(`Voici le lien pour voir le code qui me fait fonctionner ${utils.randomItem(":3", ":)", "!")}`);
-			embed.setTitle("voir le code");
+			embed.setDescription(`Here is the link to access to my code ${utils.randomItem(":3", ":)", "!")}`);
+			embed.setTitle("see the code");
 			embed.setURL(require("../package.json").repository.url);
 			return embed;
 		});
@@ -216,8 +216,8 @@ new Command("invite", {
 		bot.generateInvite({ permissions: "ADMINISTRATOR" })
 			.then(link => message.customEmbed((embed) =>
 				embed
-					.setDescription(`Voici un lien pour m'inviter dans votre serveur`)
-					.setTitle("inviter")
+					.setDescription(`Here is my invite link ${utils.randomItem(":3", ":)", "!")}`)
+					.setTitle("invite")
 					.setURL(link)
 			))
 
@@ -227,14 +227,14 @@ new Command("invite", {
 /*
 
 new Command("emote send", {
-	description: `Sends an emote from an emote id (devlopper feature)`,
+	description: `Sends an emote from an emote id (developer feature)`,
 	syntax: `emote send <emote id>`,
 	execute: async (messageInfo) => {
 		let { message, commandAttr, bot } = messageInfo;
 
-		let splited = commandAttr.content.split(" ");
+		let splitted = commandAttr.content.split(" ");
 
-		let emote = await bot.emojis.cache.get(splited[0]);
+		let emote = await bot.emojis.cache.get(splitted[0]);
 
 		message.simple(`<${emote.animated ? "a" : ""}:${emote.name}:${emote.id}>`);
 
@@ -247,12 +247,12 @@ new Command("emote react", {
 	execute: (messageInfo) => {
 		let { message, commandAttr } = messageInfo;
 
-		let splited = commandAttr.content.split(" ");
+		let splitted = commandAttr.content.split(" ");
 
-		message.channel.messages.fetch(splited[0])
+		message.channel.messages.fetch(splitted[0])
 			.then(fetched => {
 				message.delete();
-				fetched.react(splited[1]);
+				fetched.react(splitted[1]);
 			});
 
 	}
