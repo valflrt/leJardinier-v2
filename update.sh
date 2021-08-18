@@ -1,4 +1,1 @@
-sudo service leJardinier stop
-git pull
-sudo service leJardinier start
-.vscode
+sudo service leJardinier stop && git pull && sudo service leJardinier start
