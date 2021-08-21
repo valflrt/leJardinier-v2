@@ -54,10 +54,14 @@ module.exports.listen = messageInfo => {
 	}, () => message.simple(`oui ${utils.randomItem("la sainte jarre-dindon", "la sainte patate")} ?`));
 
 	filter({
-		userIDs: ["348011923985661952"], // D1s3ase
-		regex: /^[Aa]nticonstitutionnellement(\s\?|\?)?$/g,
+		userIDs: ["363976260260593674"], // Blind
+		regex: /\*pew pew\*$/g,
 		message: message
-	}, () => message.simple(`oui maître, exactement`));
+	}, () => message.simple("https://cdn.discordapp.com/attachments/820063958177677382/878536964679294986/Screenshot_20210817_094236.jpg"));
+
+	filter({
+		userIDs: [""]
+	});
 
 };
 
