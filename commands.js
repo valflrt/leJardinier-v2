@@ -135,7 +135,7 @@ new Command("choose", {
 		let { message, commandAttr, bot } = messageInfo;
 		message.guild.members.fetch()
 			.then(members => {
-				message.embed(`${commandAttr.content && `${message.author}\n${commandAttr.content}\n${bot.user}\nThe chosen person is ${members.random()}`}`);
+				message.embed(commandAttr.content ? `${message.author}\n${commandAttr.content}\n${bot.user}\nThe chosen person is ${members.random()}` : `The chosen person is ${members.random()}`);
 			});
 	}
 });
@@ -199,12 +199,11 @@ new Command("code", {
 	syntax: `code`,
 	execute: messageInfo => {
 		let { message } = messageInfo;
-		message.customEmbed(embed => {
-			embed.setDescription(`Here is the link to access to my code ${utils.randomItem(":3", ":)", "!")}`);
-			embed.setTitle("see the code");
-			embed.setURL(require("../package.json").repository.url);
-			return embed;
-		});
+		message.customEmbed(embed =>
+			embed.setDescription(`Here is the link to access to my code ${utils.randomItem(":3", ":)", "!")}`)
+				.setTitle("see code")
+				.setURL(require("./package.json").repository.url)
+		);
 	}
 });
 

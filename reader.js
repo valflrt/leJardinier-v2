@@ -59,10 +59,6 @@ module.exports.listen = messageInfo => {
 		message: message
 	}, () => message.simple("https://cdn.discordapp.com/attachments/820063958177677382/878536964679294986/Screenshot_20210817_094236.jpg"));
 
-	filter({
-		userIDs: [""]
-	});
-
 };
 
 module.exports.static = (bot) => {
