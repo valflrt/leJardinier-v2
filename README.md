@@ -13,4 +13,4 @@
 # Notes
 
 - this bot is for development usage only
-- *Caution: my code is extremely fucked up so don't pay too much attention*
+- *Caution: my code was extremely fucked up at this time so don't pay too much attention*
