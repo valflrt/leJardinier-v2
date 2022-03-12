@@ -1,4 +1,4 @@
-# leJardinier (v2)
+# leJardinier (old version)
 
 ## Installation
 
